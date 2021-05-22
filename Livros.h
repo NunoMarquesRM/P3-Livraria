@@ -91,7 +91,7 @@ PNodo LibertarNodo (PNodo P){
 	return P;
 }
 
-int CompararElementos (LIVRO X, LIVRO Y){
+int CompararElementosISBN (LIVRO X, LIVRO Y){
 	if (X.ISBN > Y.ISBN)
 		return 1;
 	if (X.ISBN < Y.ISBN)
@@ -101,7 +101,7 @@ int CompararElementos (LIVRO X, LIVRO Y){
 
 PNodo Procurar (PNodo Head, LIVRO X){
 	PNodo P = Head;
-	while (CompararElementos(P->Elemento, X) != 0)
+	while (CompararElementosISBN(P->Elemento, X) != 0)
 		P = P->Prox; 
 	return P;
 }
@@ -142,9 +142,9 @@ int ConsultarCabeca (PNodo Head, LIVRO X){
 	PNodo P = Head;
 	if (Head == NULL)
 		return 0;
-	while (CompararElementos(P->Elemento, X) != 0 && P->Prox != NULL)
+	while (CompararElementosISBN(P->Elemento, X) != 0 && P->Prox != NULL)
 		P = P->Prox; 
-	if (CompararElementos(P->Elemento, X) == 0)
+	if (CompararElementosISBN(P->Elemento, X) == 0)
 		return 1;
 	return 0;
 } 
@@ -159,11 +159,11 @@ void RemoverLivro(PNodo *Head, PNodo *Tail, int isbn){
 			RemoverUnicoElemento(Head,Tail);
 		}
 		else{
-			if(CompararElementos((*Head)->Elemento,LR) == 0){
+			if(CompararElementosISBN((*Head)->Elemento,LR) == 0){
 				*Head = RemoverCabeca(*Head);
 			}
 			else{
-				if(CompararElementos((*Tail)->Elemento,LR) == 0){
+				if(CompararElementosISBN((*Tail)->Elemento,LR) == 0){
 					*Tail = RemoverCauda(*Tail);
 				}
 				else{
@@ -173,4 +173,88 @@ void RemoverLivro(PNodo *Head, PNodo *Tail, int isbn){
 		}
 	}
 }
+// Consultar ISBN
+void ListarISBN (PNodo Head, int isbn){
+	PNodo P = Head;
+	LIVRO X;
+	X.ISBN = isbn;
+	while(P != NULL){
+		if(CompararElementosISBN(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+		}
+		P = P->Prox;
+	}
+}
+// Consultar Ano
+int CompararElementosAno (LIVRO X, LIVRO Y){
+	if (X.Ano > Y.Ano)
+		return 1;
+	if (X.Ano < Y.Ano)
+		return -1;
+	return 0;
+}
+
+void ListarAno (PNodo Head, int ano){
+	PNodo P = Head;
+	LIVRO X;
+	X.Ano = ano;
+	while(P != NULL){
+		if(CompararElementosAno(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+		}
+		P = P->Prox;
+	}
+}
+// Consultar Preco
+int CompararElementosPreco (LIVRO X, LIVRO Y){
+	if (X.Preco > Y.Preco)
+		return 1;
+	if (X.Preco < Y.Preco)
+		return -1;
+	return 0;
+}
+
+void ListarPreco (PNodo Head, int preco, int flag){
+	PNodo P = Head;
+	LIVRO X;
+	X.Preco = preco;
+	while(P != NULL){
+		if(CompararElementosPreco(P->Elemento, X) == 0 && flag == 0){
+			ConsultarLivro(P->Elemento);
+		}
+		if(CompararElementosPreco(P->Elemento, X) == -1 && flag == -1){
+			ConsultarLivro(P->Elemento);
+		}
+		if(CompararElementosPreco(P->Elemento, X) == 1 && flag == 1){
+			ConsultarLivro(P->Elemento);
+		}
+		P = P->Prox;
+	}
+}
+// Consultar Titulo
+int CompararElementosTitulo (LIVRO X, LIVRO Y){
+	if (strstr(X.Titulo, Y.Titulo) == NULL){
+		return 1;
+	}
+	return 0;
+}
+
+void ListarTitulo (PNodo Head, char *tmp){
+	PNodo P = Head;
+	LIVRO X;
+	
+	strcpy(X.Titulo,tmp);
+	int c = 0;
+	while(P != NULL){
+		if(CompararElementosTitulo(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+			c++;
+		}
+		P = P->Prox;
+	}
+	if(c == 0){
+		printf("Não existe!");
+	}
+}
+
 

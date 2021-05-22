@@ -4,6 +4,7 @@
 #include <time.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "Livros.h"
 //#include "Cliente.h"
@@ -56,8 +57,8 @@ void menuFicheiro(){
 }
 
 void menuLivros(){
-	int n;
-	
+	int n, opcao, isbn, consultarTMP;
+	char consultarTMPChar[100];
 	// No futuro esta variavel tem de estar no main e ser
 	// mandada como parametro
 	int c = 0;
@@ -71,7 +72,7 @@ void menuLivros(){
 		printf("|	1. Inserir Livro           |\n");
 		printf("|	2. Remover Livro           |\n");
 		printf("|	3. Alterar Livro           |\n");
-		printf("|	4. Consultar Livro         |\n");;
+		printf("|	4. Consultar Livro         |\n");
 		printf("|	0. Sair                    |\n");
 		printf("|__________________________________|\n");
 		
@@ -83,7 +84,6 @@ void menuLivros(){
 		switch (n){
 			
 			LIVRO X;
-			int isbn;
 			// Tem de ser com Listas Ligadas
 			case 1:
 				printf("Introduza o ISBN do livro: \n");
@@ -138,7 +138,7 @@ void menuLivros(){
 
 				if (ConsultarCabeca(Head, LR) == 1){
 					while(P != NULL){
-						if (CompararElementos(P->Elemento, LR) == 0){
+						if (CompararElementosISBN(P->Elemento, LR) == 0){
 							printf("Introduza o Titulo do livro: \n");
 							scanf("%s",LR.Titulo);
 
@@ -170,9 +170,11 @@ void menuLivros(){
 							RemoverLivro(&Head,&Tail, isbn);
 							// Adiciona o livro editado à lista original
 							if(Tamanho(Head) == 0){
+								// Se a lista estiver vazia
 								InserirPrimeiroElemento(&Head, &Tail, LR);
 							}
 							else{
+								// Se houver mais que um elemento na lista
 								Head = InserirCabeca(Head, LR);
 							}
 						}
@@ -185,7 +187,81 @@ void menuLivros(){
 				//com esta frase no titulo), Autor(nome completo) e ano de publicacao
 				//Editora e Area cientifica...
 				
-				Listar(Head);
+				printf("\n __________________________________\n");
+				printf("|    Menu de Consulta de Livros    |\n");
+				printf("|                                  |\n");
+				printf("|	 1. ISBN                   |\n");
+				printf("|	 2. Título                 |\n");
+				printf("|	 3. Idioma                 |\n");
+				printf("|	 4. Primeiro Autor         |\n");
+				printf("|	 5. Segundo Autor          |\n");
+				printf("|	 6. Editora                |\n");
+				printf("|	 7. Ano de Publicação      |\n");
+				printf("|	 8. Área Científica        |\n");
+				printf("|	 9. Igual Preço (€)        |\n");
+				printf("|	10. Inferior Preço (€)     |\n");
+				printf("|	11. Superior Preço (€)     |\n");
+				printf("|__________________________________|\n");
+				printf("Opção: ");
+				scanf("%d",&opcao);
+
+				switch(opcao){
+					case 1:
+						printf("ISBN do Livro a consultar: ");
+						scanf("%d", &consultarTMP);
+						ListarISBN(Head, consultarTMP);
+						break;
+					case 2:
+						printf("Título do Livro a consultar: ");
+						scanf("%s", consultarTMPChar);
+						ListarTitulo(Head, consultarTMPChar);
+						break;
+					case 3:
+						//printf("Título do Livro a consultar:");
+						//scanf("%s", consultarTMPChar);
+						//ListarTitulo(Head, consultarTMPChar);
+						break;
+					case 4:
+						break;
+					case 5:
+						break;
+					case 6:
+						break;
+					case 7:
+						printf("Ano de Publicação do Livro a consultar: ");
+						scanf("%d", &consultarTMP);
+						ListarAno(Head, consultarTMP);
+						break;
+					case 8:
+						break;
+					case 9:
+						printf("Igual Preço (€) do Livro a consultar: ");
+						scanf("%d", &consultarTMP);
+						ListarPreco(Head, consultarTMP, 0);
+						break;
+					// Trabalho Extra
+					case 10:
+						printf("Inferior Preço (€) do Livro a consultar: ");
+						scanf("%d", &consultarTMP);
+						ListarPreco(Head, consultarTMP, -1);
+						break;
+					// Trabalho Extra
+					case 11:
+						printf("Superior Preço (€) do Livro a consultar: ");
+						scanf("%d", &consultarTMP);
+						ListarPreco(Head, consultarTMP, 1);
+						break;
+					default:
+						printf("\nIntroduza um número válido!\n");
+						break;
+				}
+
+
+
+
+
+
+				//Listar(Head);
 				break;
 			case 0:
 				break;
