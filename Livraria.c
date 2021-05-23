@@ -59,13 +59,10 @@ void menuFicheiro(){
 void menuLivros(){
 	int n, opcao, isbn, consultarTMP;
 	char consultarTMPChar[100];
-	char getString[100];
-	char getString11[100];
-	char tmp[2] = "_";
 	// No futuro esta variavel tem de estar no main e ser
 	// mandada como parametro
 	int c = 0;
-	PNodo Head = NULL, Tail = NULL, L;
+	PNodo Head = NULL, Tail = NULL;
 
 	while(true){
 		
@@ -93,39 +90,25 @@ void menuLivros(){
 				scanf("%d",&X.ISBN);
 				
 				printf("Introduza o Titulo do livro: \n");
-				/*while((strstr(getString, "__")) == NULL){
-					
-					scanf("%s",getString11);
-					strcat(getString,getString11);
-					strcat(getString, tmp);
-					printf("Esta: %s\n", getString);
-				}*/
-				//scanf("%s",X.Titulo);
-				//fgets(getString, sizeof(getString), stdin);
-				fflush(stdin);
-				scanf("%[^\n]%*c",&getString);
-				printf("esta merda: %s \n", getString);
-
-
-
+				scanf(" %[^\n]%*c", X.Titulo);
 
 				printf("Introduza o Idioma do livro: \n");
-				scanf("%s",X.Idioma);
+				scanf(" %[^\n]%*c",X.Idioma);
 				
 				printf("Introduza o Primeiro Autor do livro: \n");
-				scanf("%s",X.PrimeiroAutor);
+				scanf(" %[^\n]%*c",X.PrimeiroAutor);
 				
 				printf("Introduza o Segundo Autor do livro: \n");
-				scanf("%s",X.SegundoAutor);
+				scanf(" %[^\n]%*c",X.SegundoAutor);
 				
 				printf("Introduza a Editora do livro: \n");
-				scanf("%s",X.Editora);
+				scanf(" %[^\n]%*c",X.Editora);
 
 				printf("Introduza o Ano de lançamento do livro: \n");
 				scanf("%d",&X.Ano);
 				
 				printf("Introduza a Área Cientifica do livro: \n");
-				scanf("%s",X.AreaCientifica);
+				scanf(" %[^\n]%*c",X.AreaCientifica);
 				
 				printf("Introduza o Preço do livro: \n");
 				scanf("%f",&X.Preco);
@@ -157,25 +140,25 @@ void menuLivros(){
 					while(P != NULL){
 						if (CompararElementosISBN(P->Elemento, LR) == 0){
 							printf("Introduza o Titulo do livro: \n");
-							scanf("%s",LR.Titulo);
+							scanf(" %[^\n]%*c",LR.Titulo);
 
 							printf("Introduza o Idioma do livro: \n");
-							scanf("%s",LR.Idioma);
+							scanf(" %[^\n]%*c",LR.Idioma);
 							
 							printf("Introduza o Primeiro Autor do livro: \n");
-							scanf("%s",LR.PrimeiroAutor);
+							scanf(" %[^\n]%*c",LR.PrimeiroAutor);
 							
 							printf("Introduza o Segundo Autor do livro: \n");
-							scanf("%s",LR.SegundoAutor);
+							scanf(" %[^\n]%*c",LR.SegundoAutor);
 							
 							printf("Introduza a Editora do livro: \n");
-							scanf("%s",LR.Editora);
+							scanf(" %[^\n]%*c",LR.Editora);
 
 							printf("Introduza o Ano de lançamento do livro: \n");
 							scanf("%d",&LR.Ano);
 							
 							printf("Introduza a Área Cientifica do livro: \n");
-							scanf("%s",LR.AreaCientifica);
+							scanf(" %[^\n]%*c",LR.AreaCientifica);
 							
 							printf("Introduza o Preço do livro: \n");
 							scanf("%f",&LR.Preco);
@@ -226,28 +209,28 @@ void menuLivros(){
 						break;
 					case 2:
 						printf("Título do Livro a consultar: ");
-						scanf("%s", consultarTMPChar);
+						scanf(" %[^\n]%*c", consultarTMPChar);
 						ListarTitulo(Head, consultarTMPChar);
 						break;
 					case 3:
-						//printf("Título do Livro a consultar:");
-						//scanf("%s", consultarTMPChar);
-						//ListarTitulo(Head, consultarTMPChar);
+						printf("Título do Idioma a consultar: ");
+						scanf(" %[^\n]%*c", consultarTMPChar);
+						ListarIdioma(Head, consultarTMPChar);
 						break;
 					case 4:
-						//printf("Primeiro Autor a consultar:");
-						//scanf("%s", consultarTMPChar);
-						//ListarPAutor(Head, consultarTMPChar);
+						printf("Primeiro Autor a consultar: ");
+						scanf(" %[^\n]%*c", consultarTMPChar);
+						ListarPAutor(Head, consultarTMPChar);
 						break;
 					case 5:
-						//printf("Segundo Autor a consultar:");
-						//scanf("%s", consultarTMPChar);
-						//ListarSAutor(Head, consultarTMPChar);
+						printf("Segundo Autor a consultar: ");
+						scanf(" %[^\n]%*c", consultarTMPChar);
+						ListarSAutor(Head, consultarTMPChar);
 						break;
 					case 6:
-						//printf("Editora a consultar:");
-						//scanf("%s", consultarTMPChar);
-						//ListarEditora(Head, consultarTMPChar);
+						printf("Editora a consultar: ");
+						scanf("%s", consultarTMPChar);
+						ListarEditora(Head, consultarTMPChar);
 						break;
 					case 7:
 						printf("Ano de Publicação do Livro a consultar: ");
@@ -255,9 +238,9 @@ void menuLivros(){
 						ListarAno(Head, consultarTMP);
 						break;
 					case 8:
-						//printf("Área Científica a consultar:");
-						//scanf("%s", consultarTMPChar);
-						//ListarAreaCientifica(Head, consultarTMPChar);
+						printf("Área Científica a consultar: ");
+						scanf("%s", consultarTMPChar);
+						ListarAreaCientifica(Head, consultarTMPChar);
 						break;
 					case 9:
 						printf("Igual Preço (€) do Livro a consultar: ");
@@ -280,7 +263,6 @@ void menuLivros(){
 						printf("\nIntroduza um número válido!\n");
 						break;
 				}
-				//Listar(Head);
 				break;
 			case 0:
 				break;
@@ -314,7 +296,6 @@ void menuClientes(){
 		
 		// Menu Principal
 		switch (n){
-			
 			// Arvore Binaria de Pesquisa Balanceada!
 		    case 1:
 				//InserirCliente();

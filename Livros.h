@@ -83,7 +83,6 @@ int Tamanho (PNodo Head){
 	return tam;
 }
 
-
 // Funções de Remover
 PNodo LibertarNodo (PNodo P){ 
 	free(P);
@@ -256,5 +255,128 @@ void ListarTitulo (PNodo Head, char *tmp){
 		printf("Não existe!");
 	}
 }
+// Consultar Idioma
+int CompararElementosIdioma (LIVRO X, LIVRO Y){
+	if (strstr(X.Idioma, Y.Idioma) == NULL){
+		return 1;
+	}
+	return 0;
+}
 
+void ListarIdioma (PNodo Head, char *tmp){
+	PNodo P = Head;
+	LIVRO X;
+	
+	strcpy(X.Idioma,tmp);
+	int c = 0;
+	while(P != NULL){
+		if(CompararElementosIdioma(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+			c++;
+		}
+		P = P->Prox;
+	}
+	if(c == 0){
+		printf("Não existe!");
+	}
+}
+// Consultar Primeiro Autor
+int CompararElementosPAutor (LIVRO X, LIVRO Y){
+	if (strstr(X.PrimeiroAutor, Y.PrimeiroAutor) == NULL){
+		return 1;
+	}
+	return 0;
+}
 
+void ListarPAutor (PNodo Head, char *tmp){
+	PNodo P = Head;
+	LIVRO X;
+	
+	strcpy(X.PrimeiroAutor,tmp);
+	int c = 0;
+	while(P != NULL){
+		if(CompararElementosPAutor(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+			c++;
+		}
+		P = P->Prox;
+	}
+	if(c == 0){
+		printf("Não existe!");
+	}
+}
+// Consultar Segundo Autor
+int CompararElementosSAutor (LIVRO X, LIVRO Y){
+	if (strstr(X.SegundoAutor, Y.SegundoAutor) == NULL){
+		return 1;
+	}
+	return 0;
+}
+
+void ListarSAutor (PNodo Head, char *tmp){
+	PNodo P = Head;
+	LIVRO X;
+	
+	strcpy(X.SegundoAutor,tmp);
+	int c = 0;
+	while(P != NULL){
+		if(CompararElementosSAutor(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+			c++;
+		}
+		P = P->Prox;
+	}
+	if(c == 0){
+		printf("Não existe!");
+	}
+}
+// Consultar Editora
+int CompararElementosEditora (LIVRO X, LIVRO Y){
+	if (strstr(X.Editora, Y.Editora) == NULL){
+		return 1;
+	}
+	return 0;
+}
+
+void ListarEditora (PNodo Head, char *tmp){
+	PNodo P = Head;
+	LIVRO X;
+	
+	strcpy(X.Editora,tmp);
+	int c = 0;
+	while(P != NULL){
+		if(CompararElementosEditora(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+			c++;
+		}
+		P = P->Prox;
+	}
+	if(c == 0){
+		printf("Não existe!");
+	}
+}
+// Consultar Area Cientifica
+int CompararElementosAreaCientifica (LIVRO X, LIVRO Y){
+	if (strstr(X.AreaCientifica, Y.AreaCientifica) == NULL){
+		return 1;
+	}
+	return 0;
+}
+
+void ListarAreaCientifica (PNodo Head, char *tmp){
+	PNodo P = Head;
+	LIVRO X;
+	
+	strcpy(X.AreaCientifica,tmp);
+	int c = 0;
+	while(P != NULL){
+		if(CompararElementosAreaCientifica(P->Elemento, X) == 0){
+			ConsultarLivro(P->Elemento);
+			c++;
+		}
+		P = P->Prox;
+	}
+	if(c == 0){
+		printf("Não existe!");
+	}
+}
