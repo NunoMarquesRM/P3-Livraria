@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include "Livros.h"
-//#include "Cliente.h"
+#include "Cliente.h"
 //#include "Encomenda.h"
 
 void menuFicheiro(){
@@ -278,9 +278,9 @@ void menuLivros(){
 
 void menuClientes(){
 	int n;
+	CLIENTE CL;
 	
 	while(true){
-		
 		printf("\n ____________________________________\n");
 		printf("|          Menu de Clientes          |\n");
 		printf("|                                    |\n");
@@ -297,31 +297,43 @@ void menuClientes(){
 		// Menu Principal
 		switch (n){
 			// Arvore Binaria de Pesquisa Balanceada!
-		    case 1:
-				//InserirCliente();
-		    	break;
-		
-		    case 2:
-		    	// Dado o NIF
-				//RemoverCliente();
-		    	break;
-		    
-		    case 3:
-		    	// Dado o NIF
-				//AlterarCliente();
-		      	break;
-		    
-		    case 4:
-		    	//NIF, Nome, Morada(dada uma frase, mostrar os clientes com esta frase na morada)
-		    	// Consultar a Lista de Compras dum cliente dado o NIF ou qq coisa - Pode ser usando um Vetor
-				//ConsultarCliente();
-		      	break;
+			case 1:
+				printf("Introduza o NIF: \n");
+				scanf("%d",&CL.NIF);
+				
+				printf("Introduza o Nome: \n");
+				scanf(" %[^\n]%*c", CL.Nome);
 
-		    case 0:
-		    	break;
-		      	
-		    default:
-		    	printf("\nIntroduza um número válido!\n");
+				printf("Introduza a Morada: \n");
+				scanf(" %[^\n]%*c", CL.Morada);
+				
+				printf("Introduza o Telefone: \n");
+				scanf(" %d", CL.Telefone);
+
+				//InserirCliente();
+				break;
+		
+			case 2:
+				// Dado o NIF
+				//RemoverCliente();
+				break;
+			
+			case 3:
+				// Dado o NIF
+				//AlterarCliente();
+				break;
+			
+			case 4:
+				//NIF, Nome, Morada(dada uma frase, mostrar os clientes com esta frase na morada)
+				// Consultar a Lista de Compras dum cliente dado o NIF ou qq coisa - Pode ser usando um Vetor
+				//ConsultarCliente();
+				break;
+
+			case 0:
+				break;
+				
+			default:
+				printf("\nIntroduza um número válido!\n");
 				break;
 		}
 		if(n == 0){
@@ -348,24 +360,20 @@ void menuEncomendas(){
 		
 		// Menu Principal
 		switch (n){
-			
 			// Filas!!
-		    case 1:
-		    	// Produto, Data de Compra, N�mero de Unidades Compradas, Pre�o total
+			case 1:
+				// Produto, Data de Compra, N�mero de Unidades Compradas, Pre�o total
 				//InserirEncomenda();
-		    	break;
-		
-		    case 2:
-		    	// Implica atualizar a lista de compras do cliente
-		    	//
+				break;
+			case 2:
+				// Implica atualizar a lista de compras do cliente
+				//
 				//RemoverEncomenda();
-		    	break;
-
-		    case 0:
-		    	break;
-		      	
-		    default:
-		    	printf("\nIntroduza um número válido!\n");
+				break;
+			case 0:
+				break;
+			default:
+				printf("\nIntroduza um número válido!\n");
 				break;
 		}
 		if(n == 0){
@@ -396,62 +404,48 @@ void menuOperacoes(){
 		printf("|	11. Consultar o desperdício de memória    			        |\n");
 		printf("|	0.  Sair                    				        	|\n");
 		printf("|_______________________________________________________________________________|\n");
-		
 		printf("Opção: ");
 		scanf("%d",&n);
 		
 		// Menu Principal
 		switch (n){
-			
-		    case 1:
+			case 1:
 				//LivrosVendidos();
-		    	break;
-		
-		    case 2:
+				break;
+			case 2:
 				//UltimaCompra();
-		    	break;
-		    
-		    case 3:
+				break;
+			case 3:
 				//LivrosComprados();
-		      	break;
-		    
-		    case 4:
+				break;
+			case 4:
 				//LivrosMaisRecentes();
-		      	break;
-		      	
-		    case 5:
+				break;
+			case 5:
 				//LivrosMaisVendidos();
-		    	break;
-		    
-		    case 6:
+				break;
+			case 6:
 				//AreaCMaisLivros();
-		    	break;
-		    	
-		    case 7:
+				break;
+			case 7:
 				//ClienteMaisLivros();
-		    	break;
-		    	
-		    case 8:
+				break;
+			case 8:
 				//ClientesDecCompras();
-		    	break;	
-		    
-		    case 9:
+				break;	
+			case 9:
 				//AnoMaisPub();
-		    	break;
-		    	
-		    case 10:
+				break;
+			case 10:
 				//ClienteMaisGastou();
-		    	break;
-		    	
-		    case 11:
+				break;
+			case 11:
 				//DesperdicioMemoria();
-		    	break;
-		    	
-		    case 0:
-		    	break;
-		      	
-		    default:
-		    	printf("\nIntroduza um número válido!\n");
+				break;
+			case 0:
+				break;
+			default:
+				printf("\nIntroduza um número válido!\n");
 				break;
 		}
 		if(n == 0){
@@ -460,9 +454,9 @@ void menuOperacoes(){
 	}
 }
 
-void main(){
-	
-    setlocale(LC_ALL, "Portuguese");
+void main()
+{
+	setlocale(LC_ALL, "Portuguese");
 	int n;
 	
 	while(true){
@@ -477,39 +471,30 @@ void main(){
 		printf("|	5. Menu de Operações         |\n");
 		printf("|	0. Sair                      |\n");
 		printf("|____________________________________|\n");
-
-		
 		printf("\nOpção: ");
 		scanf("%d",&n);
-			
+		
 		// Menu Principal
 		switch (n){
-			
-		    case 1:
+			case 1:
 				menuFicheiro();
-		    	break;
-		
-		    case 2:
+				break;
+			case 2:
 				menuLivros();
-		    	break;
-		    
-		    case 3:
+				break;
+			case 3:
 				menuClientes();
-		      	break;
-		      	
-		    case 4:
+				break;
+			case 4:
 				menuEncomendas();
-		      	break;
-		    
-		    case 5:
+				break;
+			case 5:
 				menuOperacoes();
-		      	break;
-		      	
-		    case 0:
-		    	break;
-		      	
-		    default:
-		    	printf("\nIntroduza um número válido!\n");
+				break;
+			case 0:
+				break;
+			default:
+				printf("\nIntroduza um número válido!\n");
 				break;
 		}
 		if(n == 0){
