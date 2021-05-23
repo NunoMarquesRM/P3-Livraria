@@ -59,6 +59,9 @@ void menuFicheiro(){
 void menuLivros(){
 	int n, opcao, isbn, consultarTMP;
 	char consultarTMPChar[100];
+	char getString[100];
+	char getString11[100];
+	char tmp[2] = "_";
 	// No futuro esta variavel tem de estar no main e ser
 	// mandada como parametro
 	int c = 0;
@@ -90,7 +93,21 @@ void menuLivros(){
 				scanf("%d",&X.ISBN);
 				
 				printf("Introduza o Titulo do livro: \n");
-				scanf("%s",X.Titulo);
+				/*while((strstr(getString, "__")) == NULL){
+					
+					scanf("%s",getString11);
+					strcat(getString,getString11);
+					strcat(getString, tmp);
+					printf("Esta: %s\n", getString);
+				}*/
+				//scanf("%s",X.Titulo);
+				//fgets(getString, sizeof(getString), stdin);
+				fflush(stdin);
+				scanf("%[^\n]%*c",&getString);
+				printf("esta merda: %s \n", getString);
+
+
+
 
 				printf("Introduza o Idioma do livro: \n");
 				scanf("%s",X.Idioma);
@@ -183,10 +200,6 @@ void menuLivros(){
 				}
 				break;
 			case 4:
-				//Consultar por ISBN, Titulo(dada uma frase, mostrar todos os livros
-				//com esta frase no titulo), Autor(nome completo) e ano de publicacao
-				//Editora e Area cientifica...
-				
 				printf("\n __________________________________\n");
 				printf("|    Menu de Consulta de Livros    |\n");
 				printf("|                                  |\n");
@@ -222,10 +235,19 @@ void menuLivros(){
 						//ListarTitulo(Head, consultarTMPChar);
 						break;
 					case 4:
+						//printf("Primeiro Autor a consultar:");
+						//scanf("%s", consultarTMPChar);
+						//ListarPAutor(Head, consultarTMPChar);
 						break;
 					case 5:
+						//printf("Segundo Autor a consultar:");
+						//scanf("%s", consultarTMPChar);
+						//ListarSAutor(Head, consultarTMPChar);
 						break;
 					case 6:
+						//printf("Editora a consultar:");
+						//scanf("%s", consultarTMPChar);
+						//ListarEditora(Head, consultarTMPChar);
 						break;
 					case 7:
 						printf("Ano de Publicação do Livro a consultar: ");
@@ -233,6 +255,9 @@ void menuLivros(){
 						ListarAno(Head, consultarTMP);
 						break;
 					case 8:
+						//printf("Área Científica a consultar:");
+						//scanf("%s", consultarTMPChar);
+						//ListarAreaCientifica(Head, consultarTMPChar);
 						break;
 					case 9:
 						printf("Igual Preço (€) do Livro a consultar: ");
@@ -255,12 +280,6 @@ void menuLivros(){
 						printf("\nIntroduza um número válido!\n");
 						break;
 				}
-
-
-
-
-
-
 				//Listar(Head);
 				break;
 			case 0:
