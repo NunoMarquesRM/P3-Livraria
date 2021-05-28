@@ -385,7 +385,7 @@ void menuEncomendas(){
 	int n, nif, isbn, quantidade;
 	float precoTotalAux;
 	ENCOMENDA ENC;
-	CLIENTE C;
+	CLIENTE C, CAUX;
 	LIVRO L;
 	
 	while(true){
@@ -407,6 +407,7 @@ void menuEncomendas(){
 				C.NIF = nif;
 
 				if(PesquisarABP(TCliente, C) == 1){
+					CAUX = PesquisarClienteAlterar(TCliente, C);
 					ENC.ClienteNIF = nif;
 					printf("Introduza o ISBN do Livro: \n");
 					scanf("%d",&isbn);
@@ -421,6 +422,7 @@ void menuEncomendas(){
 						if(L.Quantidade-quantidade >= 0){
 							// Alteração da quantidade de livros
 							L.Quantidade = L.Quantidade-quantidade;
+							ENC.UnidadesEncomendadas = L.Quantidade;
 							// Remove o livro da lista original
 							RemoverLivro(&Head,&Tail, L.ISBN);
 							// Adiciona o livro editado à lista original
@@ -438,6 +440,17 @@ void menuEncomendas(){
 							// Datas da Encomenda
 							printf("Introduza a Data da Encomenda (Formato: '10-03-2021'): \n");
 							scanf(" %[^\n]%*c", ENC.DataEncomenda);
+							
+							FEncomendas = Juntar(ENC, FEncomendas);
+							
+							// Remove e equilibra
+							TCliente = RemoverABP(TCliente, C);
+							TCliente = CriarABPEquilibradaIB(TCliente);
+							// Adiciona a nova encomenda
+							CAUX.ListaCompras = Juntar(ENC,CAUX.ListaCompras);
+							// Adiciona o Cliente com a nova encomenda
+							TCliente = InserirABP(TCliente, CAUX);
+							TCliente = CriarABPEquilibradaIB(TCliente);
 						}
 						else{
 							printf("Não é possível encomendar este número de unidades!\n");

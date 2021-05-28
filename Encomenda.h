@@ -48,3 +48,19 @@ PNodoFila Juntar (ENCOMENDA X, PNodoFila Fila){
 	PAnt->Prox = Novo;
 	return Fila;
 }
+
+void ListarEncomenda(ENCOMENDA X){
+	printf("\n__Encomenda__\n");
+	printf("NIF do Cliente:        %d\n",X.ClienteNIF);
+	printf("ISBN do Livro:         %d\n",X.LivroISBN);
+	printf("Data da Encomenda:     %s\n",X.DataEncomenda);
+	printf("Unidades Encomendadas: %d\n",X.UnidadesEncomendadas);
+	printf("Preço Total:           %.2f\n",X.PrecoTotal);
+}
+
+void MostrarFila (PNodoFila Q){
+	while (Q != NULL){
+		ListarEncomenda(Q->Elemento);
+		Q = Q->Prox;
+	}
+}

@@ -129,11 +129,12 @@ CLIENTE PesquisarClienteAlterar(PNodoAB T, CLIENTE C){
 }
 
 void MostrarCliente (CLIENTE X){
-	printf("%d  \n", X.NIF);
-	printf("%s  \n", X.Nome);
-	printf("%s  \n", X.Morada);
-	printf("%d  \n", X.Telefone);
-	printf("%s  \n", X.ListaCompras);
+	printf("NIF:      %d\n", X.NIF);
+	printf("Nome:     %s\n", X.Nome);
+	printf("Morada:   %s\n", X.Morada);
+	printf("Telefone: %d\n", X.Telefone);
+	printf("--Lista de Encomendas--\n");
+	MostrarFila(X.ListaCompras);
 }
 
 void ListarEmOrdemAB (PNodoAB T) {

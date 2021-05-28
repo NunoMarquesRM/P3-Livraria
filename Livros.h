@@ -53,16 +53,16 @@ PNodo InserirCabeca (PNodo Head, LIVRO X){
 }
 
 void ConsultarLivro(LIVRO X){
-	printf("%d  \n",X.ISBN);
-	printf("%s  \n",X.Titulo);
-	printf("%s  \n",X.Idioma);
-	printf("%s  \n",X.PrimeiroAutor);
-	printf("%s  \n",X.SegundoAutor);
-	printf("%s  \n",X.Editora);
-	printf("%d  \n",X.Ano);
-	printf("%s  \n",X.AreaCientifica);
-	printf("%.2f  \n",X.Preco);
-	printf("%d  \n",X.Quantidade);
+	printf("ISBN:                %d\n",X.ISBN);
+	printf("Titulo:              %s\n",X.Titulo);
+	printf("Idioma:              %s\n",X.Idioma);
+	printf("Primeiro Autor:      %s\n",X.PrimeiroAutor);
+	printf("Segundo Autor:       %s\n",X.SegundoAutor);
+	printf("Editora:             %s\n",X.Editora);
+	printf("Ano:                 %d\n",X.Ano);
+	printf("Área Científica:     %s\n",X.AreaCientifica);
+	printf("Preço:               %.2f\n",X.Preco);
+	printf("Quantidade em stock: %d\n",X.Quantidade);
 }
 
 void Listar (PNodo Head){
