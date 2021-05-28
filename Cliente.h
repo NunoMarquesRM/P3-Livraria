@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "Encomenda.h"
 
 typedef struct Cliente {
 	int NIF;
 	char Nome[100];
 	char Morada[100];
 	int Telefone;
-	char ListaCompras[100];
+	PNodoFila ListaCompras;
 }CLIENTE;
 
 struct NodoAB {
@@ -113,6 +114,18 @@ int PesquisarABP (PNodoAB T, CLIENTE X){   // 0 = nao existe; 1 = existe
 		return PesquisarABP(T->Esquerda, X);
 	else
 		return PesquisarABP(T->Direita, X);
+}
+
+//Pesquisar por Cliente
+CLIENTE PesquisarClienteAlterar(PNodoAB T, CLIENTE C){
+	if (T == NULL)
+		return T->Elemento;
+	if (CompararElementosNIF(C, T->Elemento) == 0)
+		return T->Elemento;
+	if (CompararElementosNIF(C, T->Elemento) == -1)   // X.NIF < (T->Elemento).NIF)
+		return PesquisarClienteAlterar(T->Esquerda, C);
+	else
+		return PesquisarClienteAlterar(T->Direita, C);
 }
 
 void MostrarCliente (CLIENTE X){

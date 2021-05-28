@@ -105,6 +105,33 @@ PNodo Procurar (PNodo Head, LIVRO X){
 	return P;
 }
 
+// Procurar por Livro
+// Se encontrar return 1
+// Senão encontrar return 0
+int TemLivro(PNodo Head, LIVRO L){
+	PNodo P = Head;
+	int c = 0;
+	while (P != NULL){
+		if(CompararElementosISBN(P->Elemento, L) == 0){
+			c = 1;
+		}
+		P = P->Prox;
+	}
+	return c;
+}
+// Procurar por Livro
+// Encontra sempre, porque a função anterior já foi utilizada no main
+// Retorna o Livro
+LIVRO ProcurarLivro(PNodo Head, LIVRO L){
+	PNodo P = Head;
+	while (P != NULL){
+		if(CompararElementosISBN(P->Elemento, L) == 0){
+			return P->Elemento;
+		}
+		P = P->Prox;
+	}
+}
+
 void RemoverUnicoElemento (PNodo *Head, PNodo *Tail){ 
 	PNodo P = *Head;
 	*Head = NULL;

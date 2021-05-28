@@ -8,10 +8,11 @@
 
 #include "Livros.h"
 #include "Cliente.h"
-#include "Encomenda.h"
+
 
 PNodo Head, Tail;
 PNodoAB TCliente;
+PNodoFila FEncomendas;
 
 void menuFicheiro(){
 	int n;
@@ -64,7 +65,6 @@ void menuLivros(){
 	char consultarTMPChar[100];
 
 	while(true){
-		
 		printf("\n __________________________________\n");
 		printf("|          Menu de Livros          |\n");
 		printf("|                                  |\n");
@@ -74,7 +74,6 @@ void menuLivros(){
 		printf("|	4. Consultar Livro         |\n");
 		printf("|	0. Sair                    |\n");
 		printf("|__________________________________|\n");
-		
 		printf("Opção: ");
 		scanf("%d",&n);
 		// Menu Principal
@@ -258,7 +257,7 @@ void menuLivros(){
 
 void menuClientes(){
 	int n, opcao;
-	CLIENTE CL, CCL;
+	CLIENTE CL, CCL, CLAUX;
 	
 	while(true){
 		printf("\n ____________________________________\n");
@@ -286,10 +285,8 @@ void menuClientes(){
 				scanf(" %[^\n]%*c", CL.Morada);
 				printf("Introduza o Telefone: \n");
 				scanf("%d",&CL.Telefone);
+				CL.ListaCompras = NULL;
 
-				//------------------------------------------Alterar lista de compras
-				char tm[100] = " ";
-				strcmp(CL.ListaCompras, tm);
 				if(PesquisarABP(TCliente, CL) == 0){
 					TCliente = InserirABP(TCliente, CL);
 					TCliente = CriarABPEquilibradaIB(TCliente);
@@ -310,6 +307,7 @@ void menuClientes(){
 				printf("Introduza o NIF do Cliente a modificar: ");
 				scanf("%d",&CL.NIF);
 				if(PesquisarABP(TCliente, CL) == 1){
+					CLAUX = PesquisarClienteAlterar(TCliente, CL);
 					TCliente = RemoverABP(TCliente, CL);
 					TCliente = CriarABPEquilibradaIB(TCliente);
 					printf("\nIntroduza o Nome: \n");
@@ -318,9 +316,7 @@ void menuClientes(){
 					scanf(" %[^\n]%*c", CL.Morada);
 					printf("Introduza o Telefone: \n");
 					scanf("%d",&CL.Telefone);
-					//------------------------------------------Alterar lista de compras
-					char tm[100] = " ";
-					strcmp(CL.ListaCompras, tm);
+					CL.ListaCompras = CLAUX.ListaCompras;
 
 					TCliente = InserirABP(TCliente, CL);
 					TCliente = CriarABPEquilibradaIB(TCliente);
@@ -386,10 +382,13 @@ void menuClientes(){
 }
 
 void menuEncomendas(){
-	int n;
+	int n, nif, isbn, quantidade;
+	float precoTotalAux;
+	ENCOMENDA ENC;
+	CLIENTE C;
+	LIVRO L;
 	
 	while(true){
-		
 		printf("\n ______________________________________\n");
 		printf("|          Menu de Encomendas          |\n");
 		printf("|                                      |\n");
@@ -397,16 +396,60 @@ void menuEncomendas(){
 		printf("|	2. Remover Encomenda           |\n");
 		printf("|	0. Sair                        |\n");
 		printf("|______________________________________|\n");
-		
 		printf("Opção: ");
 		scanf("%d",&n);
 		
 		// Menu Principal
 		switch (n){
-			// Filas!!
 			case 1:
-				// Produto, Data de Compra, N�mero de Unidades Compradas, Pre�o total
-				//InserirEncomenda();
+				printf("Introduza o NIF do Cliente: \n");
+				scanf("%d",&nif);
+				C.NIF = nif;
+
+				if(PesquisarABP(TCliente, C) == 1){
+					ENC.ClienteNIF = nif;
+					printf("Introduza o ISBN do Livro: \n");
+					scanf("%d",&isbn);
+					L.ISBN = isbn;
+
+					if(TemLivro(Head,L) == 1){
+						ENC.LivroISBN = isbn;
+						printf("Introduza o número de unidades a encomendar: \n");
+						scanf("%d",&quantidade);
+						L = ProcurarLivro(Head, L);
+
+						if(L.Quantidade-quantidade >= 0){
+							// Alteração da quantidade de livros
+							L.Quantidade = L.Quantidade-quantidade;
+							// Remove o livro da lista original
+							RemoverLivro(&Head,&Tail, L.ISBN);
+							// Adiciona o livro editado à lista original
+							if(Tamanho(Head) == 0){
+								// Se a lista estiver vazia
+								InserirPrimeiroElemento(&Head, &Tail, L);
+							}
+							else{
+								// Se houver mais que um elemento na lista
+								Head = InserirCabeca(Head, L);
+							}
+							// Cálculo do Preço total da compra
+							precoTotalAux = L.Preco * quantidade;
+							ENC.PrecoTotal = precoTotalAux;
+							// Datas da Encomenda
+							printf("Introduza a Data da Encomenda (Formato: '10-03-2021'): \n");
+							scanf(" %[^\n]%*c", ENC.DataEncomenda);
+						}
+						else{
+							printf("Não é possível encomendar este número de unidades!\n");
+						}
+					}
+					else{
+						printf("Livro não existe!\n");
+					}
+				}
+				else{
+					printf("Cliente não existe!\n");
+				}
 				break;
 			case 2:
 				// Implica atualizar a lista de compras do cliente
@@ -499,9 +542,11 @@ void menuOperacoes(){
 void main()
 {
 	setlocale(LC_ALL, "Portuguese");
+	
 	int n;
 	Head = NULL, Tail = NULL;
 	TCliente = NULL;
+	FEncomendas = NULL;
 
 	while(true){
 		
@@ -524,7 +569,7 @@ void main()
 				menuFicheiro();
 				break;
 			case 2:
-				menuLivros(Head, Tail);
+				menuLivros();
 				break;
 			case 3:
 				menuClientes();
