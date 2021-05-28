@@ -1,9 +1,9 @@
 typedef struct Encomenda {
-	struct Livro.ISBN;
-	struct Cliente.NIF;
-	char[10] DataEncomenda;
-	char[10] DataCompra;
-	char[10] DataVenda;	
+	int LivroISBN;
+	int ClienteNIF;
+	char DataEncomenda[10];
+	char DataCompra[10];
+	char DataVenda[10];	
 	int UnidadesEncomendadas;
 	float PrecoTotal;
 }ENCOMENDA;

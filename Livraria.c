@@ -8,7 +8,10 @@
 
 #include "Livros.h"
 #include "Cliente.h"
-//#include "Encomenda.h"
+#include "Encomenda.h"
+
+PNodo Head, Tail;
+PNodoAB TCliente;
 
 void menuFicheiro(){
 	int n;
@@ -24,7 +27,7 @@ void menuFicheiro(){
 		printf("|	0. Sair                      |\n");
 		printf("|____________________________________|\n");
 		
-		printf("Opção: s");
+		printf("Opção: ");
 		scanf("%d",&n);
 		
 		
@@ -59,10 +62,6 @@ void menuFicheiro(){
 void menuLivros(){
 	int n, opcao, isbn, consultarTMP;
 	char consultarTMPChar[100];
-	// No futuro esta variavel tem de estar no main e ser
-	// mandada como parametro
-	int c = 0;
-	PNodo Head = NULL, Tail = NULL;
 
 	while(true){
 		
@@ -78,8 +77,6 @@ void menuLivros(){
 		
 		printf("Opção: ");
 		scanf("%d",&n);
-		
-		
 		// Menu Principal
 		switch (n){
 			
@@ -88,40 +85,31 @@ void menuLivros(){
 			case 1:
 				printf("Introduza o ISBN do livro: \n");
 				scanf("%d",&X.ISBN);
-				
 				printf("Introduza o Titulo do livro: \n");
 				scanf(" %[^\n]%*c", X.Titulo);
-
 				printf("Introduza o Idioma do livro: \n");
 				scanf(" %[^\n]%*c",X.Idioma);
-				
 				printf("Introduza o Primeiro Autor do livro: \n");
 				scanf(" %[^\n]%*c",X.PrimeiroAutor);
-				
 				printf("Introduza o Segundo Autor do livro: \n");
 				scanf(" %[^\n]%*c",X.SegundoAutor);
-				
 				printf("Introduza a Editora do livro: \n");
 				scanf(" %[^\n]%*c",X.Editora);
-
 				printf("Introduza o Ano de lançamento do livro: \n");
 				scanf("%d",&X.Ano);
-				
 				printf("Introduza a Área Cientifica do livro: \n");
 				scanf(" %[^\n]%*c",X.AreaCientifica);
-				
 				printf("Introduza o Preço do livro: \n");
 				scanf("%f",&X.Preco);
-				
 				printf("Introduza a Quantidade deste livro em stock: \n");
 				scanf("%d",&X.Quantidade);
+
 				if(Head == NULL){
 					InserirPrimeiroElemento(&Head, &Tail, X);
 				}
 				else{
 					Head = InserirCabeca(Head, X);
 				}
-				c++;
 				break;
 			case 2:
 				printf("Introduza o ISBN do Livro a remover:");
@@ -141,28 +129,20 @@ void menuLivros(){
 						if (CompararElementosISBN(P->Elemento, LR) == 0){
 							printf("Introduza o Titulo do livro: \n");
 							scanf(" %[^\n]%*c",LR.Titulo);
-
 							printf("Introduza o Idioma do livro: \n");
 							scanf(" %[^\n]%*c",LR.Idioma);
-							
 							printf("Introduza o Primeiro Autor do livro: \n");
 							scanf(" %[^\n]%*c",LR.PrimeiroAutor);
-							
 							printf("Introduza o Segundo Autor do livro: \n");
 							scanf(" %[^\n]%*c",LR.SegundoAutor);
-							
 							printf("Introduza a Editora do livro: \n");
 							scanf(" %[^\n]%*c",LR.Editora);
-
 							printf("Introduza o Ano de lançamento do livro: \n");
 							scanf("%d",&LR.Ano);
-							
 							printf("Introduza a Área Cientifica do livro: \n");
 							scanf(" %[^\n]%*c",LR.AreaCientifica);
-							
 							printf("Introduza o Preço do livro: \n");
 							scanf("%f",&LR.Preco);
-							
 							printf("Introduza a Quantidade deste livro em stock: \n");
 							scanf("%d",&LR.Quantidade);
 							
@@ -200,7 +180,7 @@ void menuLivros(){
 				printf("|__________________________________|\n");
 				printf("Opção: ");
 				scanf("%d",&opcao);
-
+				// Menu secundário da Opção 4 do menu principal
 				switch(opcao){
 					case 1:
 						printf("ISBN do Livro a consultar: ");
@@ -277,8 +257,8 @@ void menuLivros(){
 }
 
 void menuClientes(){
-	int n;
-	CLIENTE CL;
+	int n, opcao;
+	CLIENTE CL, CCL;
 	
 	while(true){
 		printf("\n ____________________________________\n");
@@ -300,38 +280,101 @@ void menuClientes(){
 			case 1:
 				printf("Introduza o NIF: \n");
 				scanf("%d",&CL.NIF);
-				
 				printf("Introduza o Nome: \n");
 				scanf(" %[^\n]%*c", CL.Nome);
-
 				printf("Introduza a Morada: \n");
 				scanf(" %[^\n]%*c", CL.Morada);
-				
 				printf("Introduza o Telefone: \n");
-				scanf(" %d", CL.Telefone);
+				scanf("%d",&CL.Telefone);
 
-				//InserirCliente();
+				//------------------------------------------Alterar lista de compras
+				char tm[100] = " ";
+				strcmp(CL.ListaCompras, tm);
+				if(PesquisarABP(TCliente, CL) == 0){
+					TCliente = InserirABP(TCliente, CL);
+					TCliente = CriarABPEquilibradaIB(TCliente);
+				}
 				break;
-		
 			case 2:
-				// Dado o NIF
-				//RemoverCliente();
+				printf("Introduza o NIF do Cliente a remover: ");
+				scanf("%d",&CL.NIF);
+				if(PesquisarABP(TCliente, CL) == 1){
+					TCliente = RemoverABP(TCliente, CL);
+					TCliente = CriarABPEquilibradaIB(TCliente);
+				}
+				else{
+					printf("O Cliente não existe!");
+				}
 				break;
-			
 			case 3:
-				// Dado o NIF
-				//AlterarCliente();
-				break;
-			
-			case 4:
-				//NIF, Nome, Morada(dada uma frase, mostrar os clientes com esta frase na morada)
-				// Consultar a Lista de Compras dum cliente dado o NIF ou qq coisa - Pode ser usando um Vetor
-				//ConsultarCliente();
-				break;
+				printf("Introduza o NIF do Cliente a modificar: ");
+				scanf("%d",&CL.NIF);
+				if(PesquisarABP(TCliente, CL) == 1){
+					TCliente = RemoverABP(TCliente, CL);
+					TCliente = CriarABPEquilibradaIB(TCliente);
+					printf("\nIntroduza o Nome: \n");
+					scanf(" %[^\n]%*c", CL.Nome);
+					printf("Introduza a Morada: \n");
+					scanf(" %[^\n]%*c", CL.Morada);
+					printf("Introduza o Telefone: \n");
+					scanf("%d",&CL.Telefone);
+					//------------------------------------------Alterar lista de compras
+					char tm[100] = " ";
+					strcmp(CL.ListaCompras, tm);
 
+					TCliente = InserirABP(TCliente, CL);
+					TCliente = CriarABPEquilibradaIB(TCliente);
+				}
+				else{
+					printf("O Cliente não existe!");
+				}
+				break;
+			case 4:
+				printf("\n __________________________________\n");
+				printf("|   Menu de Consulta de Clientes   |\n");
+				printf("|                                  |\n");
+				printf("|	 1. NIF                    |\n");
+				printf("|	 2. Nome                   |\n");
+				printf("|	 3. Morada                 |\n");
+				printf("|	 4. Telefone               |\n");
+				printf("|	 5. Mostrar Todos          |\n");
+				printf("|__________________________________|\n");
+				printf("Opção: ");
+				scanf("%d",&opcao);
+				// Menu secundário da Opção 4 do menu principal
+				switch(opcao){
+					case 1:
+						printf("NIF do cliente a consultar: ");
+						scanf("%d", &CCL.NIF);
+						ListarNIF(TCliente, CCL);
+						break;
+					case 2:
+						printf("Nome do cliente a consultar: ");
+						scanf(" %[^\n]%*c", CCL.Nome);
+						ListarNome(TCliente, CCL);
+						break;
+					case 3:
+						printf("Morada do cliente a consultar: ");
+						scanf(" %[^\n]%*c", CCL.Morada);
+						ListarMorada(TCliente, CCL);
+						break;
+					case 4:
+						printf("Telefone do cliente a consultar: ");
+						scanf("%d", &CCL.Telefone);
+						ListarTelefone(TCliente, CCL);
+						break;
+					// Trabalho Extra
+					case 5:
+						printf("\n");
+						ListarEmOrdemAB(TCliente);
+						break;
+					default:
+						printf("\nIntroduza um número válido!\n");
+						break;
+				}
+				break;
 			case 0:
 				break;
-				
 			default:
 				printf("\nIntroduza um número válido!\n");
 				break;
@@ -386,11 +429,10 @@ void menuOperacoes(){
 	int n;
 	
 	while(true){
-		
+		//Obrigatorio Acrescentar no Minimo mais 4 Operacoes enquadradas com o Problema
 		printf("\n _______________________________________________________________________________\n");
 		printf("|                               Menu de Operações				|\n");
 		printf("|                                    						|\n");
-		//Obrigatorio Acrescentar no Minimo mais 4 Operacoes enquadradas com o Problema
 		printf("|	1.  Consultar o número de livros vendidos				|\n");
 		printf("|	2.  Consultar a data da última compra de um livro    		        |\n");	
 		printf("|	3.  Consultar o número de livros comprados por um dado cliente          |\n");
@@ -458,7 +500,9 @@ void main()
 {
 	setlocale(LC_ALL, "Portuguese");
 	int n;
-	
+	Head = NULL, Tail = NULL;
+	TCliente = NULL;
+
 	while(true){
 		
 		printf("\n ____________________________________\n");
@@ -480,7 +524,7 @@ void main()
 				menuFicheiro();
 				break;
 			case 2:
-				menuLivros();
+				menuLivros(Head, Tail);
 				break;
 			case 3:
 				menuClientes();
