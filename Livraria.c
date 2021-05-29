@@ -19,6 +19,8 @@ void menuFicheiro(){
 	FILE *fpE, *fpL, *fpC;
 	PNodoFila FE;
 	PNodo LIVROS;
+	char infos[500];
+	char *in;
 	while(true){
 		printf("\n ____________________________________\n");
 		printf("|          Menu de Ficheiros         |\n");
@@ -66,7 +68,130 @@ void menuFicheiro(){
 				printf("\nFicheiros guardados com Sucesso!\n");
 				break;
 			case 3:
-				//AbrirFicheiro();
+				// Ficheiro Encomendas
+				fpE = fopen("encomenda.txt","r");
+				int ch = 0;
+				int lines = 1;
+				while ((ch = fgetc(fpE)) != EOF){
+					if (ch == '\n')
+						lines++;
+				}
+				fclose(fpE);
+
+				fpE = fopen("encomenda.txt","r");
+				char s[2] = ",";
+				ENCOMENDA ENC;
+				int num;
+				while(lines != 0){
+					num = 1;
+					fscanf(fpE," %s",infos);
+					//printf("%s\n",infos);
+					in = strtok(infos, s);
+					while( in != NULL ) {
+						if(num == 1){
+							ENC.id = atoi(in);
+							num++;
+						}
+						else if(num == 2){
+							ENC.ClienteNIF = atoi(in);
+							num++;
+						}
+						else if(num == 3){
+							ENC.LivroISBN = atoi(in);
+							num++;
+						}
+						else if(num == 4){
+							strcpy(ENC.DataEncomenda,in);
+							num++;
+						}
+						else if(num == 5){
+							ENC.UnidadesEncomendadas = atoi(in);
+							num++;
+						}
+						else if(num == 6){
+							ENC.PrecoTotal = atof(in);
+							FEncomendas = Juntar(ENC, FEncomendas);
+						}
+						in = strtok(NULL, s);
+					}
+					lines--;
+				}
+				fclose(fpE);
+
+				// Ler ficheiro Livros
+				fpL = fopen("livros.txt","r");
+				ch = 0;
+				lines = 1;
+				while ((ch = fgetc(fpE)) != EOF){
+					if (ch == '\n')
+						lines++;
+				}
+				fclose(fpL);
+				
+				fpL = fopen("livros.txt","r");
+				
+				LIVRO LIV;
+				while(lines != 0){
+					num = 1;
+					//fscanf(fpE," %s",infos);
+					printf("%s\n",infos);
+					in = strtok(infos, s);
+					while( in != NULL ) {
+						if(num == 1){
+							LIV.ISBN = atoi(in);
+							num++;
+						}
+						else if(num == 2){
+							strcpy(LIV.Titulo,in);
+							num++;
+						}
+						else if(num == 3){
+							strcpy(LIV.Idioma,in);
+							num++;
+						}
+						else if(num == 4){
+							strcpy(LIV.PrimeiroAutor,in);
+							num++;
+						}
+						else if(num == 5){
+							strcpy(LIV.SegundoAutor,in);
+							num++;
+						}
+						else if(num == 6){
+							strcpy(LIV.Editora,in);
+							num++;
+						}
+						else if(num == 7){
+							LIV.Ano = atoi(in);
+							num++;
+						}
+						else if(num == 8){
+							strcpy(LIV.AreaCientifica,in);
+							num++;
+						}
+						else if(num == 9){
+							LIV.Preco = atof(in);
+							num++;
+						}
+						else if(num == 10){
+							LIV.Quantidade = atoi(in);
+							if(Head == NULL){
+								InserirPrimeiroElemento(&Head, &Tail, LIV);
+							}
+							else{
+								Head = InserirCabeca(Head, LIV);
+							}
+						}
+						in = strtok(NULL, s);
+					}
+					lines--;
+				}
+				fclose(fpL);
+
+				//fpC = fopen("cliente.txt","r");
+				
+				//fclose(fpC);
+				printf("\nOperação realizada com Sucesso!\n");
 				break;
 			case 0:
 				break;

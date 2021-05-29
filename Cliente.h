@@ -323,3 +323,4 @@ void SaveFile(PNodoAB T, FILE *fpC) {
 		SaveFile(T->Direita,fpC);
 	}
 }
+
