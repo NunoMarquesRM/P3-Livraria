@@ -165,6 +165,7 @@ PNodoAB SubstituirNodoDireita (PNodoAB T, CLIENTE *X){
 	T->Esquerda = SubstituirNodoDireita(T->Esquerda, X);
 	return T;
 }
+
 /*
 PNodoAB SubstituirNodoEsquerda (PNodoAB T, CLIENTE *X){
 	PNodoAB  PAux;
@@ -179,6 +180,7 @@ PNodoAB SubstituirNodoEsquerda (PNodoAB T, CLIENTE *X){
 	return T;
 }
 */
+
 PNodoAB RemoverNodoABP (PNodoAB T){
 	PNodoAB  R;
 	CLIENTE  X;

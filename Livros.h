@@ -11,7 +11,7 @@ typedef struct Livro{
 	int Ano;
 	char AreaCientifica[100];
 	float Preco;
-	int Quantidade;	
+	int Quantidade;
 }LIVRO;
 
 struct Nodo{

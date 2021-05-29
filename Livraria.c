@@ -14,13 +14,50 @@ PNodo Head, Tail;
 PNodoAB TCliente;
 PNodoFila FEncomendas;
 
+PNodoFila ficheirosAtualizaListaComprasCliente(char *in, CLIENTE CLI){
+	char s[2] = ",";
+	ENCOMENDA ENC;
+	int num = 1;
+	while( num != 7 ) {
+		if(num == 1){
+			ENC.id = atoi(in);
+			num++;
+		}
+		else if(num == 2){
+			ENC.ClienteNIF = atoi(in);
+			num++;
+		}
+		else if(num == 3){
+			ENC.LivroISBN = atoi(in);
+			num++;
+		}
+		else if(num == 4){
+			strcpy(ENC.DataEncomenda,in);
+			num++;
+		}
+		else if(num == 5){
+			ENC.UnidadesEncomendadas = atoi(in);
+			num++;
+		}
+		else if(num == 6){
+			ENC.PrecoTotal = atof(in);
+			CLI.ListaCompras = Juntar(ENC, CLI.ListaCompras);
+			num++;
+		}
+		if(num != 7){
+			in = strtok(NULL, s);
+		}
+	}
+	return CLI.ListaCompras;
+}
+
 void menuFicheiro(){
 	int n;
 	FILE *fpE, *fpL, *fpC;
 	PNodoFila FE;
 	PNodo LIVROS;
 	char infos[500];
-	char *in;
+	char *in, *inAux;
 	while(true){
 		printf("\n ____________________________________\n");
 		printf("|          Menu de Ficheiros         |\n");
@@ -62,16 +99,16 @@ void menuFicheiro(){
 					LIVROS = LIVROS->Prox;
 				}
 				fclose(fpL);
-				// Ficheiro dos cLientes.txt
+				// Ficheiro dos clientes.txt
 				SaveFile(TCliente, fpC);
 				fclose(fpC);
 				printf("\nFicheiros guardados com Sucesso!\n");
 				break;
 			case 3:
-				// Ficheiro Encomendas
+				// Ficheiro encomendas.txt
 				fpE = fopen("encomenda.txt","r");
 				int ch = 0;
-				int lines = 1;
+				int lines = 0;
 				while ((ch = fgetc(fpE)) != EOF){
 					if (ch == '\n')
 						lines++;
@@ -84,8 +121,7 @@ void menuFicheiro(){
 				int num;
 				while(lines != 0){
 					num = 1;
-					fscanf(fpE," %s",infos);
-					//printf("%s\n",infos);
+					fscanf(fpE," %[^\n]%*c",infos);
 					in = strtok(infos, s);
 					while( in != NULL ) {
 						if(num == 1){
@@ -117,11 +153,11 @@ void menuFicheiro(){
 					lines--;
 				}
 				fclose(fpE);
-
+				
 				// Ler ficheiro Livros
 				fpL = fopen("livros.txt","r");
 				ch = 0;
-				lines = 1;
+				lines = 0;
 				while ((ch = fgetc(fpE)) != EOF){
 					if (ch == '\n')
 						lines++;
@@ -129,12 +165,10 @@ void menuFicheiro(){
 				fclose(fpL);
 				
 				fpL = fopen("livros.txt","r");
-				
 				LIVRO LIV;
 				while(lines != 0){
 					num = 1;
-					//fscanf(fpE," %s",infos);
-					printf("%s\n",infos);
+					fscanf(fpL," %[^\n]%*c",infos);
 					in = strtok(infos, s);
 					while( in != NULL ) {
 						if(num == 1){
@@ -187,10 +221,53 @@ void menuFicheiro(){
 					lines--;
 				}
 				fclose(fpL);
-
-				//fpC = fopen("cliente.txt","r");
 				
-				//fclose(fpC);
+				// Ler ficheiro Clientes
+				fpC = fopen("cliente.txt","r");
+				ch = 0;
+				lines = 0;
+				while ((ch = fgetc(fpC)) != EOF){
+					if (ch == '\n')
+						lines++;
+				}
+				fclose(fpC);
+				
+				fpC = fopen("cliente.txt","r");
+				CLIENTE CLI;
+				ENCOMENDA ENCAUX;
+				int count;
+				while(lines != 0){
+					num = 1;
+					fscanf(fpC," %[^\n]%*c",infos);
+					in = strtok(infos, s);
+					while( in != NULL ) {
+						if(num == 1){
+							CLI.NIF = atoi(in);
+							num++;
+						}
+						else if(num == 2){
+							strcpy(CLI.Nome,in);
+							num++;
+						}
+						else if(num == 3){
+							strcpy(CLI.Morada,in);
+							num++;
+						}
+						else if(num == 4){
+							CLI.Telefone = atoi(in);
+							num++;
+						}
+						else if(num == 5){
+							CLI.ListaCompras = ficheirosAtualizaListaComprasCliente(in, CLI);
+						}
+						in = strtok(NULL, s);
+					}
+					lines--;
+					TCliente = InserirABP(TCliente, CLI);
+					TCliente = CriarABPEquilibradaIB(TCliente);
+					CLI.ListaCompras = NULL;
+				}
+				fclose(fpC);
 				printf("\nOperação realizada com Sucesso!\n");
 				break;
 			case 0:
@@ -736,7 +813,6 @@ void menuOperacoes(){
 				break;
 			case 9:
 				// Percorre a lista dos livros e guarda os anos numa matriz auxiliar (anos)
-				// 
 				while(livr != NULL){
 					verificar = 0;
 					for (i = 0; i < 25; i++){

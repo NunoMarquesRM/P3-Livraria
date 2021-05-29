@@ -123,3 +123,4 @@ int LivrosVendidos(PNodoFila Q){
 	}
 	return c;
 }
+
