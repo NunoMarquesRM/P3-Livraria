@@ -16,9 +16,10 @@ PNodoFila FEncomendas;
 
 void menuFicheiro(){
 	int n;
-	
+	FILE *fpE, *fpL, *fpC;
+	PNodoFila FE;
+	PNodo LIVROS;
 	while(true){
-		
 		printf("\n ____________________________________\n");
 		printf("|          Menu de Ficheiros         |\n");
 		printf("|                                    |\n");
@@ -27,22 +28,45 @@ void menuFicheiro(){
 		printf("|	3. Abrir Ficheiro            |\n");
 		printf("|	0. Sair                      |\n");
 		printf("|____________________________________|\n");
-		
 		printf("Opção: ");
 		scanf("%d",&n);
 		
-		
 		// Menu Principal
 		switch (n){
-			
 			case 1:
-				//NovoFicheiro();
+				fpE = fopen("encomenda.txt","w");
+				fpL = fopen("livros.txt","w");
+				fpC = fopen("cliente.txt","w");
+				fclose(fpE);
+				fclose(fpL);
+				fclose(fpC);
+				printf("\nFicheiros criados com Sucesso!\n");
 				break;
 			case 2:
-				//AbrirFicheiro();
+				fpE = fopen("encomenda.txt","w");
+				fpL = fopen("livros.txt","w");
+				fpC = fopen("cliente.txt","w");
+				// Ficheiro das encomendas.txt
+				FE = FEncomendas;
+				while(FE != NULL){
+					fprintf(fpE,"%d,%d,%d,%s,%d,%.2f\n",FE->Elemento.id,FE->Elemento.ClienteNIF,FE->Elemento.LivroISBN,FE->Elemento.DataEncomenda,FE->Elemento.UnidadesEncomendadas,FE->Elemento.PrecoTotal);
+					FE = FE->Prox;
+				}
+				fclose(fpE);
+				// Ficheiro dos livros.txt
+				LIVROS = Head;
+				while(LIVROS != NULL){
+					fprintf(fpL,"%d,%s,%s,%s,%s,%s,%d,%s,%.2f,%d\n",LIVROS->Elemento.ISBN,LIVROS->Elemento.Titulo,LIVROS->Elemento.Idioma,LIVROS->Elemento.PrimeiroAutor,LIVROS->Elemento.SegundoAutor,LIVROS->Elemento.Editora,LIVROS->Elemento.Ano,LIVROS->Elemento.AreaCientifica,LIVROS->Elemento.Preco,LIVROS->Elemento.Quantidade);
+					LIVROS = LIVROS->Prox;
+				}
+				fclose(fpL);
+				// Ficheiro dos cLientes.txt
+				SaveFile(TCliente, fpC);
+				fclose(fpC);
+				printf("\nFicheiros guardados com Sucesso!\n");
 				break;
 			case 3:
-				//GuardarFicheiro();
+				//AbrirFicheiro();
 				break;
 			case 0:
 				break;
@@ -519,15 +543,21 @@ void menuEncomendas(){
 }
 
 void menuOperacoes(){
-	int n;
-	int numVendidos, aux;
+	int n, i;
+	int numVendidos;
+	CLIENTE C;
+	// Variáveis case 9
+	int anos[25][2] = {0};
+	PNodo livr = Head;
+	int verificar = 0;
+
 	while(true){
 		//Obrigatorio Acrescentar no Minimo mais 4 Operacoes enquadradas com o Problema
 		printf("\n _______________________________________________________________________________\n");
 		printf("|                               Menu de Operações				|\n");
 		printf("|                                    						|\n");
 		printf("|	1.  Consultar o número de livros vendidos				|\n");
-		printf("|	2.  Consultar a data da última compra de um livro    		        |\n");	
+		printf("|	2.  Consultar a data da última compra de um livro    		        |\n");
 		printf("|	3.  Consultar o número de livros comprados por um dado cliente          |\n");
 		printf("|	4.  Consultar os K livros mais recentes de uma dada Área Científica     |\n");
 		printf("|	5.  Consultar os K livros mais vendidos num dado período    	        |\n");
@@ -552,6 +582,15 @@ void menuOperacoes(){
 				//UltimaCompra();
 				break;
 			case 3:
+				ListarNIFNOME(TCliente);
+				printf("\nNIF do Cliente:\n");
+				scanf("%d",&C.NIF);
+				if(PesquisarABP(TCliente, C) == 1){
+					ListarListaCompras(TCliente, C);
+				}
+				else{
+					printf("Cliente não existe!\n");
+				}
 				//LivrosComprados();
 				break;
 			case 4:
@@ -571,6 +610,40 @@ void menuOperacoes(){
 				//ClientesDecCompras();
 				break;
 			case 9:
+				// Percorre a lista dos livros e guarda os anos numa matriz auxiliar (anos)
+				// 
+				while(livr != NULL){
+					verificar = 0;
+					for (i = 0; i < 25; i++){
+						if(anos[i][0] == livr->Elemento.Ano){
+							verificar = 1;
+							anos[i][1] = anos[i][1] + 1;
+						}
+					}
+					if(verificar == 0){
+						for (i = 0; i < 25; i++){
+							if(anos[i][0] == 0){
+								anos[i][0] = livr->Elemento.Ano;
+								anos[i][1] = anos[i][1] + 1;
+							}
+						}
+					}
+					livr = livr->Prox;
+				}
+				int anoF = 0, anoAux = 0, aux1 = 0, aux = 0;
+				
+				for (i = 0; i < 25; i++){
+					if(anos[i][0] != 0){
+						anoAux = anos[i][0];
+						aux = anos[i][1];
+						if(aux > aux1){
+							anoF = anoAux;
+							aux1 = aux;
+						}
+					}
+				}
+
+				printf("\nO ano com mais publicações é: %d", anoF);
 				//AnoMaisPub();
 				break;
 			case 10:

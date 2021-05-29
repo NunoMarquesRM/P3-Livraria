@@ -2,7 +2,7 @@ typedef struct Encomenda {
 	int id;
 	int ClienteNIF;
 	int LivroISBN;
-	char DataEncomenda[20];
+	char DataEncomenda[10];
 	int UnidadesEncomendadas;
 	float PrecoTotal;
 }ENCOMENDA;

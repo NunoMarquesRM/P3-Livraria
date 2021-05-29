@@ -280,4 +280,46 @@ void ListarTelefone(PNodoAB T, CLIENTE C){
 		ListarTelefone(T->Direita, C);
 	}
 }
+//---Listar NIF e Nome do Cliente---
+void MostrarNIFNOME(CLIENTE X){
+	printf("\nNIF:      %d\n", X.NIF);
+	printf("Nome:     %s\n", X.Nome);
+}
+//--Listar em Ordem--
+void ListarNIFNOME(PNodoAB T) {
+	if (T != NULL) {
+		ListarEmOrdemAB(T->Esquerda);
+		MostrarNIFNOME(T->Elemento);
+		ListarEmOrdemAB(T->Direita);
+	}
+}
+// Operação 3: Listar lista de compras de um dado cliente
+void ListarListaCompras(PNodoAB T, CLIENTE X) {
+	if (T != NULL) {
+		if (CompararElementosNIF(X, T->Elemento) == 0)
+			MostrarFila(T->Elemento.ListaCompras);
+		if (CompararElementosNIF(X, T->Elemento) == -1) // X.NIF < (T->Elemento).NIF)
+			return ListarNIF(T->Esquerda, X);
+		else
+			return ListarNIF(T->Direita, X);
+	}
+}
 
+// Guardar estrutura no ficheiro
+void SaveFile(PNodoAB T, FILE *fpC) {
+	char strFinal[500] = {};
+	char str[200] = {};
+	PNodoFila aux;
+	if (T != NULL) {
+		SaveFile(T->Esquerda,fpC);
+		aux = T->Elemento.ListaCompras;
+		while(aux != NULL){
+			snprintf(str, sizeof(str),",%d,%d,%d,%s,%d,%.2f",aux->Elemento.id,aux->Elemento.ClienteNIF,aux->Elemento.LivroISBN,aux->Elemento.DataEncomenda,aux->Elemento.UnidadesEncomendadas,aux->Elemento.PrecoTotal);
+			strcat(strFinal,str);
+			aux = aux->Prox;
+		}
+		strcat(strFinal,"\n");
+		fprintf(fpC,"%d,%s,%s,%d%s",T->Elemento.NIF,T->Elemento.Nome,T->Elemento.Morada,T->Elemento.Telefone,strFinal);
+		SaveFile(T->Direita,fpC);
+	}
+}
