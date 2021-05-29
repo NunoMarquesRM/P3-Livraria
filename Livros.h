@@ -53,7 +53,7 @@ PNodo InserirCabeca (PNodo Head, LIVRO X){
 }
 
 void ConsultarLivro(LIVRO X){
-	printf("ISBN:                %d\n",X.ISBN);
+	printf("\nISBN:                %d\n",X.ISBN);
 	printf("Titulo:              %s\n",X.Titulo);
 	printf("Idioma:              %s\n",X.Idioma);
 	printf("Primeiro Autor:      %s\n",X.PrimeiroAutor);
@@ -119,6 +119,7 @@ int TemLivro(PNodo Head, LIVRO L){
 	}
 	return c;
 }
+
 // Procurar por Livro
 // Encontra sempre, porque a função anterior já foi utilizada no main
 // Retorna o Livro

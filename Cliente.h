@@ -129,7 +129,7 @@ CLIENTE PesquisarClienteAlterar(PNodoAB T, CLIENTE C){
 }
 
 void MostrarCliente (CLIENTE X){
-	printf("NIF:      %d\n", X.NIF);
+	printf("\nNIF:      %d\n", X.NIF);
 	printf("Nome:     %s\n", X.Nome);
 	printf("Morada:   %s\n", X.Morada);
 	printf("Telefone: %d\n", X.Telefone);

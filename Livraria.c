@@ -35,23 +35,19 @@ void menuFicheiro(){
 		// Menu Principal
 		switch (n){
 			
-		    case 1:
+			case 1:
 				//NovoFicheiro();
-		    	break;
-		
-		    case 2:
+				break;
+			case 2:
 				//AbrirFicheiro();
-		    	break;
-		    
-		    case 3:
+				break;
+			case 3:
 				//GuardarFicheiro();
-		      	break;
-
-		    case 0:
-		    	break;
-		      	
-		    default:
-		    	printf("\nIntroduza um numero valido!\n");
+				break;
+			case 0:
+				break;
+			default:
+				printf("\nIntroduza um numero valido!\n");
 				break;
 		}
 		if(n == 0){
@@ -176,6 +172,7 @@ void menuLivros(){
 				printf("|	 9. Igual Preço (€)        |\n");
 				printf("|	10. Inferior Preço (€)     |\n");
 				printf("|	11. Superior Preço (€)     |\n");
+				printf("|	12. Mostrar todos          |\n");
 				printf("|__________________________________|\n");
 				printf("Opção: ");
 				scanf("%d",&opcao);
@@ -237,6 +234,10 @@ void menuLivros(){
 						printf("Superior Preço (€) do Livro a consultar: ");
 						scanf("%d", &consultarTMP);
 						ListarPreco(Head, consultarTMP, 1);
+						break;
+					// Trabalho Extra
+					case 12:
+						Listar(Head);
 						break;
 					default:
 						printf("\nIntroduza um número válido!\n");
@@ -382,9 +383,9 @@ void menuClientes(){
 }
 
 void menuEncomendas(){
-	int n, nif, isbn, quantidade;
+	int n, nif, isbn, quantidade, id;
 	float precoTotalAux;
-	ENCOMENDA ENC;
+	ENCOMENDA ENC, ENCAUX;
 	CLIENTE C, CAUX;
 	LIVRO L;
 	
@@ -394,6 +395,7 @@ void menuEncomendas(){
 		printf("|                                      |\n");
 		printf("|	1. Inserir Encomenda           |\n");
 		printf("|	2. Remover Encomenda           |\n");
+		printf("|	3. Consultar Encomendas        |\n");
 		printf("|	0. Sair                        |\n");
 		printf("|______________________________________|\n");
 		printf("Opção: ");
@@ -418,11 +420,16 @@ void menuEncomendas(){
 						printf("Introduza o número de unidades a encomendar: \n");
 						scanf("%d",&quantidade);
 						L = ProcurarLivro(Head, L);
-
 						if(L.Quantidade-quantidade >= 0){
+							if(FilaVazia(FEncomendas) == 1){
+								ENC.id = 1;
+							}
+							else{
+								ENC.id = UltimoIDEncomenda(FEncomendas) + 1;
+							}
 							// Alteração da quantidade de livros
 							L.Quantidade = L.Quantidade-quantidade;
-							ENC.UnidadesEncomendadas = L.Quantidade;
+							ENC.UnidadesEncomendadas = quantidade;
 							// Remove o livro da lista original
 							RemoverLivro(&Head,&Tail, L.ISBN);
 							// Adiciona o livro editado à lista original
@@ -465,9 +472,39 @@ void menuEncomendas(){
 				}
 				break;
 			case 2:
-				// Implica atualizar a lista de compras do cliente
-				//
-				//RemoverEncomenda();
+				printf("Introduza o NIF do Cliente: \n");
+				scanf("%d",&nif);
+				C.NIF = nif;
+
+				if(PesquisarABP(TCliente, C) == 1){
+					CAUX = PesquisarClienteAlterar(TCliente, C);
+					printf("\n--Lista de Encomendas do Cliente--\n");
+					MostrarFila(CAUX.ListaCompras);
+					ENC.ClienteNIF = nif;
+					printf("\nIntroduza o id da Encomenda: \n");
+					scanf("%d",&id);
+
+					if(TemEncomenda(CAUX.ListaCompras, id) == 1){
+						CAUX.ListaCompras = RemoverEncomenda(CAUX.ListaCompras, id);
+						FEncomendas = RemoverEncomenda(FEncomendas, id);
+						// Remove e equilibra
+						TCliente = RemoverABP(TCliente, C);
+						TCliente = CriarABPEquilibradaIB(TCliente);
+						// Adiciona o Cliente com a lista de encomendas atualizada
+						TCliente = InserirABP(TCliente, CAUX);
+						TCliente = CriarABPEquilibradaIB(TCliente);
+					}
+					else{
+						printf("O id da encomenda não existe!\n");
+					}
+				}
+				else{
+					printf("Cliente não existe!\n");
+				}
+				break;
+			// Trabalho Extra
+			case 3:
+				MostrarFila(FEncomendas);
 				break;
 			case 0:
 				break;
@@ -483,7 +520,7 @@ void menuEncomendas(){
 
 void menuOperacoes(){
 	int n;
-	
+	int numVendidos, aux;
 	while(true){
 		//Obrigatorio Acrescentar no Minimo mais 4 Operacoes enquadradas com o Problema
 		printf("\n _______________________________________________________________________________\n");
@@ -508,7 +545,8 @@ void menuOperacoes(){
 		// Menu Principal
 		switch (n){
 			case 1:
-				//LivrosVendidos();
+				numVendidos = LivrosVendidos(FEncomendas);
+				printf("\nLivros Vendidos: %d\n",numVendidos);
 				break;
 			case 2:
 				//UltimaCompra();
@@ -526,11 +564,12 @@ void menuOperacoes(){
 				//AreaCMaisLivros();
 				break;
 			case 7:
-				//ClienteMaisLivros();
+				printf("\nCliente com Livros mais comprados:\n");
+				//ClienteLivrosMaisVendidos(TCliente);
 				break;
 			case 8:
 				//ClientesDecCompras();
-				break;	
+				break;
 			case 9:
 				//AnoMaisPub();
 				break;
