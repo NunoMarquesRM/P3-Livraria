@@ -1270,7 +1270,6 @@ void menuOperacoes(){
 				num = 0;
 				while(L2 != NULL){
 					aux = 50 - strlen(L2->Elemento.AreaCientifica);
-					printf("AUX: %d\n", aux);
 					num = num + aux;
 					L2 = L2->Prox;
 				}
