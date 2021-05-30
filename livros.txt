@@ -1,5 +1,11 @@
-2,Programacao 3,Portugues,Catarina Oliveira,João Domingos,Coinamystreet,2020,Informatica,20.00,0
-5,Programaçao 1,Italiano,Este ,Aquele,Editora,1991,Informatica,100.88,2
-4,Design,Espanhol,Pedro Espanhol,Espanhol del Pedro,Editora,1990,Informatica,90.99,10
-3,Agricultura 101,Portugues,Pedro Delgado,Ricardo Vicente,Coinamystreet,2020,Psicologia,40.00,50
-1,Teste da Maria Caxuxa,Portunhol,Red Mike,Tomás is gay,Coinamystreet,2021,Psicologia,12.55,9
+656,Relations Internationales,Frances,Serge Sur,Pierre Pereira,LGDJ,2021,Direito,44.33,10
+278,World Travel,Ingles,Anthony Bourdain,Laurie Woolever,Bloomsbury,2021,Gastronomia,21.38,3
+856,Forensic Psychology,Ingles,David Crighton,Graham Towl,Wiley,2021,Psicologia,50.02,5
+987,Viaje a la Locura,Espanhol,Jose Gonzalez,Maria Pereira,Versatil,2017,Ficcao,18.35,7
+889,Preparacao Exame Portugues,Portugues,Maria Augusta Neves,Luis Guerreiro,Porto Editora,2019,Portugues,26.99,8
+335,Preparacao Exame Matematica,Portugues,Maria Augusta Neves,Luis Guerreiro,Porto Editora,2020,Matematica,26.91,2
+543,Programacao em PHP,Portugues,Frederico Tavares,Manuel Pereira,FCA,2020,Programacao,22.95,9
+678,Programacao em Java,Portugues,Pedro Coelho,Jorge Fonseca,FCA,2015,Programacao,38.85,7
+232,Programacao em Python,Portugues,Joao Pavao Martins,Pedro Miguel,IST,2019,Programacao,35.00,3
+346,Bom dia Veronica,Portugues Brasil,IIana Casoy,Andrea Killmore,Darkside,2020,Thriller,6.49,10
+101,Belas Adormecidas,Portugues,Owen King,Stephen King,Bertrand,2019,Ficcao Cientifica,19.98,5

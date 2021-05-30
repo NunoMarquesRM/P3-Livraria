@@ -771,7 +771,8 @@ void menuOperacoes(){
 		printf("|	10. Consultar o cliente que gastou mais dinheiro num dado período       |\n");
 		printf("|	11. Consultar o desperdício de memória (Título)			        |\n");
 		printf("|	12. Consultar o desperdício de memória (Área Científica) 	        |\n");
-		printf("|	13.  Consultar o número total de livros vendidos			|\n");
+		printf("|	13. Consultar o número total de livros vendidos				|\n");
+		printf("|	14. Consultar o Idioma com mais livros      			        |\n");
 		printf("|	0.  Sair                    				        	|\n");
 		printf("|_______________________________________________________________________________|\n");
 		printf("Opção: ");
@@ -782,66 +783,48 @@ void menuOperacoes(){
 			case 1:
 				printf("\nIntroduza a data inicial do período de dias:\n");
 				printf("Mês: ");
-				int mes11, mes22, ano11, ano22;
-				scanf("%d",&mes11);
+				int mes110, mes220, ano110, ano220;
+				scanf("%d",&mes110);
 				printf("Ano: ");
-				scanf("%d",&ano11);
+				scanf("%d",&ano110);
 				printf("\n\nIntroduza a data final do período de dias:\n");
 				printf("Mês: ");
-				scanf("%d",&mes22);
+				scanf("%d",&mes220);
 				printf("Ano: ");
-				scanf("%d",&ano22);
+				scanf("%d",&ano220);
 
-				int clienteNIF[25][1] = {0};
-				float clientePreco[25][1] = {0.0};
-				PNodoFila CMLC6 = FEncomendas;
-				int verificar7 = 0;
+				int livrosVendidos = 0;
+				PNodoFila CMLC7 = FEncomendas;
 				// Percorre a lista das Encomendas e guarda os anos numa matriz auxiliar (anos)
-				int dataMes1, dataAno1;
-				char *in11;
-				char txt1[10];
-				char s1[2] = "-";
-				while(CMLC6 != NULL){
-					verificar7 = 0;
+				int dataMes10, dataAno10;
+				char *in110;
+				char txt10[10];
+				char s10[2] = "-";
+				while(CMLC7 != NULL){
 					//--retirar data: mes e ano das encomendas
-					dataMes1 = 0;
-					dataAno1 = 0;
-					strcpy(txt1,CMLC6->Elemento.DataEncomenda);
-					in11 = strtok(txt1,s1);
-					in11 = strtok(NULL, s1);
-					while(in11 != NULL){
-						if(dataMes1 == 0){
-							dataMes1 = atoi(in11);
+					dataMes10 = 0;
+					dataAno10 = 0;
+					strcpy(txt10,CMLC7->Elemento.DataEncomenda);
+					in110 = strtok(txt10,s10);
+					in110 = strtok(NULL, s10);
+					while(in110 != NULL){
+						if(dataMes10 == 0){
+							dataMes10 = atoi(in110);
 						}
-						else if(dataAno1 == 0){
-							dataAno1 = atoi(in11);
+						else if(dataAno10 == 0){
+							dataAno10 = atoi(in110);
 						}
-						in11 = strtok(NULL, s1);
+						in110 = strtok(NULL, s10);
 					}
 					//--termina o retirar data!
 					// Se as seguintes condições se verificarem:
 					// a encomenda foi feita neste período de dias
-					if(ano11 <= dataAno1 && ano22 >= dataAno1){
-						if(ano11 == dataAno1 && mes11 <= dataMes1 || ano22 == dataAno1 && mes22 >= dataMes1 || ano11 < dataAno1 && ano22 > dataAno1){
-							for (i = 0; i < 25; i++){
-								if(clienteNIF[i][0] == CMLC6->Elemento.ClienteNIF){
-									verificar7 = 1;
-									clientePreco[i][0] = clientePreco[i][0] + CMLC6->Elemento.PrecoTotal;
-								}
-							}
-							if(verificar7 == 0){
-								for (i = 0; i < 25; i++){
-									if(clienteNIF[i][0] == 0){
-										clienteNIF[i][0] = CMLC6->Elemento.ClienteNIF;
-										clientePreco[i][0] = CMLC6->Elemento.PrecoTotal;
-										i = 25;
-									}
-								}
-							}
-						}
+					if( (ano110 == ano220 && dataMes10 >= mes110 && dataMes10 <= mes220 ) || (ano110 != ano220 && dataAno10 == ano110 && dataMes10 >= mes110 || ano110 != ano220 && dataAno10 == ano220 && dataMes10 <= mes220 || dataAno10 < ano220 && dataAno10 > ano110) ){
+						livrosVendidos = livrosVendidos + CMLC7->Elemento.UnidadesEncomendadas;
 					}
-					CMLC6 = CMLC6->Prox;
+					CMLC7 = CMLC7->Prox;
 				}
+				printf("\nForam vendidos %d neste intervalo de tempo!\n",livrosVendidos);
 				break;
 			case 2:
 				printf("\nA última compra foi realizada em:\n");
@@ -975,21 +958,19 @@ void menuOperacoes(){
 					//--termina o retirar data!
 					// Se as seguintes condições se verificarem:
 					// a encomenda foi feita neste período de dias
-					if(ano1 <= dataAno && ano2 >= dataAno){
-						if(ano1 == dataAno && mes1 <= dataMes || ano2 == dataAno && mes2 >= dataMes || ano1 < dataAno && ano2 > dataAno){
-							for (i = 0; i < 25; i++){
-								if(clienteMaisLivrosComprados5[i][0] == CMLC5->Elemento.LivroISBN){
-									verificar6 = 1;
-									clienteMaisLivrosComprados5[i][1] = clienteMaisLivrosComprados5[i][1] + CMLC5->Elemento.UnidadesEncomendadas;
-								}
+					if( (ano110 == ano220 && dataMes10 >= mes110 && dataMes10 <= mes220 ) || (ano110 != ano220 && dataAno10 == ano110 && dataMes10 >= mes110 || ano110 != ano220 && dataAno10 == ano220 && dataMes10 <= mes220 || dataAno10 < ano220 && dataAno10 > ano110) ){
+						for (i = 0; i < 25; i++){
+							if(clienteMaisLivrosComprados5[i][0] == CMLC5->Elemento.LivroISBN){
+								verificar6 = 1;
+								clienteMaisLivrosComprados5[i][1] = clienteMaisLivrosComprados5[i][1] + CMLC5->Elemento.UnidadesEncomendadas;
 							}
-							if(verificar6 == 0){
-								for (i = 0; i < 25; i++){
-									if(clienteMaisLivrosComprados5[i][0] == 0){
-										clienteMaisLivrosComprados5[i][0] = CMLC5->Elemento.LivroISBN;
-										clienteMaisLivrosComprados5[i][1] = CMLC5->Elemento.UnidadesEncomendadas;
-										i = 25;
-									}
+						}
+						if(verificar6 == 0){
+							for (i = 0; i < 25; i++){
+								if(clienteMaisLivrosComprados5[i][0] == 0){
+									clienteMaisLivrosComprados5[i][0] = CMLC5->Elemento.LivroISBN;
+									clienteMaisLivrosComprados5[i][1] = CMLC5->Elemento.UnidadesEncomendadas;
+									i = 25;
 								}
 							}
 						}
@@ -1230,21 +1211,19 @@ void menuOperacoes(){
 					//--termina o retirar data!
 					// Se as seguintes condições se verificarem:
 					// a encomenda foi feita neste período de dias
-					if(ano11 <= dataAno1 && ano22 >= dataAno1){
-						if(ano11 == dataAno1 && mes11 <= dataMes1 || ano22 == dataAno1 && mes22 >= dataMes1 || ano11 < dataAno1 && ano22 > dataAno1){
-							for (i = 0; i < 25; i++){
-								if(clienteNIF[i][0] == CMLC6->Elemento.ClienteNIF){
-									verificar7 = 1;
-									clientePreco[i][0] = clientePreco[i][0] + CMLC6->Elemento.PrecoTotal;
-								}
+					if( (ano110 == ano220 && dataMes10 >= mes110 && dataMes10 <= mes220 ) || (ano110 != ano220 && dataAno10 == ano110 && dataMes10 >= mes110 || ano110 != ano220 && dataAno10 == ano220 && dataMes10 <= mes220 || dataAno10 < ano220 && dataAno10 > ano110) ){
+						for (i = 0; i < 25; i++){
+							if(clienteNIF[i][0] == CMLC6->Elemento.ClienteNIF){
+								verificar7 = 1;
+								clientePreco[i][0] = clientePreco[i][0] + CMLC6->Elemento.PrecoTotal;
 							}
-							if(verificar7 == 0){
-								for (i = 0; i < 25; i++){
-									if(clienteNIF[i][0] == 0){
-										clienteNIF[i][0] = CMLC6->Elemento.ClienteNIF;
-										clientePreco[i][0] = CMLC6->Elemento.PrecoTotal;
-										i = 25;
-									}
+						}
+						if(verificar7 == 0){
+							for (i = 0; i < 25; i++){
+								if(clienteNIF[i][0] == 0){
+									clienteNIF[i][0] = CMLC6->Elemento.ClienteNIF;
+									clientePreco[i][0] = CMLC6->Elemento.PrecoTotal;
+									i = 25;
 								}
 							}
 						}
@@ -1299,6 +1278,44 @@ void menuOperacoes(){
 			case 13:
 				numVendidos = LivrosVendidos(FEncomendas);
 				printf("\nLivros Vendidos: %d\n",numVendidos);
+				break;
+			case 14:
+				printf("\nO Idioma com mais Livros é: \n");
+				char arrayOfArraysOfChars1[25][100] = {}; // array to hold multiple single arrays of characters
+				int acL1[25] = {0};
+				PNodo caseSix1 = Head;
+				int verificar9;
+				while(caseSix1 != NULL){
+					verificar9 = 0;
+					for (int i = 0; i < 25; i++){
+						if(strcmp(arrayOfArraysOfChars1[i],caseSix1->Elemento.Idioma) == 0){
+							verificar9 = 1;
+							acL1[i] = acL1[i]+1;
+						}
+					}
+					if(verificar9 == 0){
+						for (int j = 0; j < 25; j++){
+							if (strlen(arrayOfArraysOfChars1[j]) == 0){
+								strcpy(arrayOfArraysOfChars1[j],caseSix1->Elemento.Idioma);
+								acL1[j] = 1;
+								j = 25;
+							}
+							
+						}
+					}
+					caseSix1 = caseSix1->Prox;
+				}
+				int posicao1 = 0;
+				numAux = 0;
+				num = 0;
+				for (int k = 0; k < 25; k++){
+					numAux = acL1[k];
+					if(numAux > num){
+						num = numAux;
+						posicao1 = k;
+					}
+				}
+				printf("%s\n",arrayOfArraysOfChars1[posicao1]);
 				break;
 			case 0:
 				break;
