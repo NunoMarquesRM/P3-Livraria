@@ -773,6 +773,7 @@ void menuOperacoes(){
 		printf("|	12. Consultar o desperdício de memória (Área Científica) 	        |\n");
 		printf("|	13. Consultar o número total de livros vendidos				|\n");
 		printf("|	14. Consultar o Idioma com mais livros      			        |\n");
+		printf("|	15. Consultar a data da primeira compra de um livro    		        |\n");
 		printf("|	0.  Sair                    				        	|\n");
 		printf("|_______________________________________________________________________________|\n");
 		printf("Opção: ");
@@ -1316,6 +1317,10 @@ void menuOperacoes(){
 					}
 				}
 				printf("%s\n",arrayOfArraysOfChars1[posicao1]);
+				break;
+			case 15:
+				printf("\nA primeira compra foi realizada em:\n");
+				printf("%s",FEncomendas->Elemento.DataEncomenda);
 				break;
 			case 0:
 				break;
