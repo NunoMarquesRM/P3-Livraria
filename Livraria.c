@@ -9,7 +9,6 @@
 #include "Livros.h"
 #include "Cliente.h"
 
-
 PNodo Head, Tail;
 PNodoAB TCliente;
 PNodoFila FEncomendas;
@@ -234,6 +233,7 @@ void menuFicheiro(){
 				
 				fpC = fopen("cliente.txt","r");
 				CLIENTE CLI;
+				CLI.ListaCompras = NULL;
 				ENCOMENDA ENCAUX;
 				int count;
 				while(lines != 0){
@@ -273,7 +273,7 @@ void menuFicheiro(){
 			case 0:
 				break;
 			default:
-				printf("\nIntroduza um numero valido!\n");
+				printf("\nIntroduza um número válido!\n");
 				break;
 		}
 		if(n == 0){
@@ -324,13 +324,18 @@ void menuLivros(){
 				scanf("%f",&X.Preco);
 				printf("Introduza a Quantidade deste livro em stock: \n");
 				scanf("%d",&X.Quantidade);
-
-				if(Head == NULL){
-					InserirPrimeiroElemento(&Head, &Tail, X);
+				if(TemLivro(Head,X) == 0){
+					if(Head == NULL){
+						InserirPrimeiroElemento(&Head, &Tail, X);
+					}
+					else{
+						Head = InserirCabeca(Head, X);
+					}
 				}
 				else{
-					Head = InserirCabeca(Head, X);
+					printf("ERRO: Já se encontra um livro com esse ISBN!\n");
 				}
+				
 				break;
 			case 2:
 				printf("Introduza o ISBN do Livro a remover:");
@@ -745,20 +750,16 @@ void menuEncomendas(){
 }
 
 void menuOperacoes(){
-	int n, i;
+	int n, i, aux, num, numAux;
 	int numVendidos;
 	CLIENTE C;
-	// Variáveis case 9
-	int anos[25][2] = {0};
-	PNodo livr = Head;
-	int verificar = 0;
 
 	while(true){
 		//Obrigatorio Acrescentar no Minimo mais 4 Operacoes enquadradas com o Problema
 		printf("\n _______________________________________________________________________________\n");
 		printf("|                               Menu de Operações				|\n");
 		printf("|                                    						|\n");
-		printf("|	1.  Consultar o número de livros vendidos				|\n");
+		printf("|	1.  Consultar o número de livros vendidos num dado período de tempo	|\n");
 		printf("|	2.  Consultar a data da última compra de um livro    		        |\n");
 		printf("|	3.  Consultar o número de livros comprados por um dado cliente          |\n");
 		printf("|	4.  Consultar os K livros mais recentes de uma dada Área Científica     |\n");
@@ -768,7 +769,9 @@ void menuOperacoes(){
 		printf("|	8.  Consultar os clientes por ordem decrescente do número de compras	|\n");
 		printf("|	9.  Consultar o Ano com mais publicações    			        |\n");
 		printf("|	10. Consultar o cliente que gastou mais dinheiro num dado período       |\n");
-		printf("|	11. Consultar o desperdício de memória    			        |\n");
+		printf("|	11. Consultar o desperdício de memória (Título)			        |\n");
+		printf("|	12. Consultar o desperdício de memória (Área Científica) 	        |\n");
+		printf("|	13.  Consultar o número total de livros vendidos			|\n");
 		printf("|	0.  Sair                    				        	|\n");
 		printf("|_______________________________________________________________________________|\n");
 		printf("Opção: ");
@@ -777,14 +780,82 @@ void menuOperacoes(){
 		// Menu Principal
 		switch (n){
 			case 1:
-				numVendidos = LivrosVendidos(FEncomendas);
-				printf("\nLivros Vendidos: %d\n",numVendidos);
+				printf("\nIntroduza a data inicial do período de dias:\n");
+				printf("Mês: ");
+				int mes11, mes22, ano11, ano22;
+				scanf("%d",&mes11);
+				printf("Ano: ");
+				scanf("%d",&ano11);
+				printf("\n\nIntroduza a data final do período de dias:\n");
+				printf("Mês: ");
+				scanf("%d",&mes22);
+				printf("Ano: ");
+				scanf("%d",&ano22);
+
+				int clienteNIF[25][1] = {0};
+				float clientePreco[25][1] = {0.0};
+				PNodoFila CMLC6 = FEncomendas;
+				int verificar7 = 0;
+				// Percorre a lista das Encomendas e guarda os anos numa matriz auxiliar (anos)
+				int dataMes1, dataAno1;
+				char *in11;
+				char txt1[10];
+				char s1[2] = "-";
+				while(CMLC6 != NULL){
+					verificar7 = 0;
+					//--retirar data: mes e ano das encomendas
+					dataMes1 = 0;
+					dataAno1 = 0;
+					strcpy(txt1,CMLC6->Elemento.DataEncomenda);
+					in11 = strtok(txt1,s1);
+					in11 = strtok(NULL, s1);
+					while(in11 != NULL){
+						if(dataMes1 == 0){
+							dataMes1 = atoi(in11);
+						}
+						else if(dataAno1 == 0){
+							dataAno1 = atoi(in11);
+						}
+						in11 = strtok(NULL, s1);
+					}
+					//--termina o retirar data!
+					// Se as seguintes condições se verificarem:
+					// a encomenda foi feita neste período de dias
+					if(ano11 <= dataAno1 && ano22 >= dataAno1){
+						if(ano11 == dataAno1 && mes11 <= dataMes1 || ano22 == dataAno1 && mes22 >= dataMes1 || ano11 < dataAno1 && ano22 > dataAno1){
+							for (i = 0; i < 25; i++){
+								if(clienteNIF[i][0] == CMLC6->Elemento.ClienteNIF){
+									verificar7 = 1;
+									clientePreco[i][0] = clientePreco[i][0] + CMLC6->Elemento.PrecoTotal;
+								}
+							}
+							if(verificar7 == 0){
+								for (i = 0; i < 25; i++){
+									if(clienteNIF[i][0] == 0){
+										clienteNIF[i][0] = CMLC6->Elemento.ClienteNIF;
+										clientePreco[i][0] = CMLC6->Elemento.PrecoTotal;
+										i = 25;
+									}
+								}
+							}
+						}
+					}
+					CMLC6 = CMLC6->Prox;
+				}
 				break;
 			case 2:
-				//UltimaCompra();
+				printf("\nA última compra foi realizada em:\n");
+				PNodoFila pf = FEncomendas;
+
+				while(pf != NULL){
+					if(pf->Prox == NULL){
+						printf("%s",pf->Elemento.DataEncomenda);
+					}
+					pf = pf->Prox;
+				}
 				break;
 			case 3:
-				ListarNIFNOME(TCliente);
+				ListarAllNIFNOME(TCliente);
 				printf("\nNIF do Cliente:\n");
 				scanf("%d",&C.NIF);
 				if(PesquisarABP(TCliente, C) == 1){
@@ -793,65 +864,441 @@ void menuOperacoes(){
 				else{
 					printf("Cliente não existe!\n");
 				}
-				//LivrosComprados();
 				break;
 			case 4:
-				//LivrosMaisRecentes();
+				printf("Introduza o K:\n");
+				int kk;
+				scanf("%d",&kk);
+				char ac[100];
+				printf("Introduza a Área Científica:\n");
+				scanf(" %[^\n]%*c",ac);
+
+				printf("\nOs K livros mais recentes de uma dada Área Científica são:\n");
+				int anos[25][2] = {0};
+				PNodo livr1 = Head;
+				int verificar3 = 0;
+				
+				// Percorre a lista dos livros e guarda os anos numa matriz auxiliar (anos)
+				while(livr1 != NULL){
+					verificar3 = 0;
+					for (i = 0; i < 25; i++){
+						if(anos[i][0] == livr1->Elemento.Ano && strcmp(livr1->Elemento.AreaCientifica,ac) == 0){
+							verificar3 = 1;
+							anos[i][1] = anos[i][1] + 1;
+						}
+					}
+					if(verificar3 == 0){
+						for (i = 0; i < 25; i++){
+							if(anos[i][0] == 0 && strcmp(livr1->Elemento.AreaCientifica,ac) == 0){
+								anos[i][0] = livr1->Elemento.Ano;
+								anos[i][1] = 1;
+								i = 25;
+							}
+						}
+					}
+					livr1 = livr1->Prox;
+				}
+				int a1, b1;
+
+				for (int x = 0; x < 25; ++x) {
+					for (int y = x + 1; y < 25; ++y) {
+						if (anos[x][0] < anos[y][0]) {
+							a1 = anos[x][1];
+							b1 = anos[x][0];
+
+							anos[x][1] = anos[y][1];
+							anos[x][0] = anos[y][0];
+
+							anos[y][1] = a1;
+							anos[y][0] = b1;
+						}
+					}
+				}
+				int y = 0;
+				while(kk != 0){
+					if(anos[y][1] == 0){
+						y++;
+					}
+					else{
+						anos[y][1] = anos[y][1] - 1;
+						ListarACeANO(Head, ac, anos[y][0]);
+						kk--;
+					}
+					if(y == 25){
+						kk = 0;
+					}
+				}
+				
+				
 				break;
 			case 5:
-				//LivrosMaisVendidos();
+				printf("\nIntroduza os k livros a aprensentar:\n");
+				int kkk;
+				scanf("%d",&kkk);
+				printf("\nIntroduza a data inicial do período de dias:\n");
+				printf("Mês: ");
+				int mes1, mes2, ano1, ano2;
+				scanf("%d",&mes1);
+				printf("Ano: ");
+				scanf("%d",&ano1);
+				printf("\n\nIntroduza a data final do período de dias:\n");
+				printf("Mês: ");
+				scanf("%d",&mes2);
+				printf("Ano: ");
+				scanf("%d",&ano2);
+
+				int clienteMaisLivrosComprados5[25][2] = {0};
+				PNodoFila CMLC5 = FEncomendas;
+				int verificar6 = 0;
+				// Percorre a lista das Encomendas e guarda os anos numa matriz auxiliar (anos)
+				int dataMes, dataAno;
+				char *in;
+				char txt[10];
+				char s[2] = "-";
+				while(CMLC5 != NULL){
+					verificar6 = 0;
+					//--retirar data: mes e ano das encomendas
+					dataMes = 0;
+					dataAno = 0;
+					strcpy(txt,CMLC5->Elemento.DataEncomenda);
+					in = strtok(txt,s);
+					in = strtok(NULL, s);
+					while(in != NULL){
+						if(dataMes == 0){
+							dataMes = atoi(in);
+						}
+						else if(dataAno == 0){
+							dataAno = atoi(in);
+						}
+						in = strtok(NULL, s);
+					}
+					//--termina o retirar data!
+					// Se as seguintes condições se verificarem:
+					// a encomenda foi feita neste período de dias
+					if(ano1 <= dataAno && ano2 >= dataAno){
+						if(ano1 == dataAno && mes1 <= dataMes || ano2 == dataAno && mes2 >= dataMes || ano1 < dataAno && ano2 > dataAno){
+							for (i = 0; i < 25; i++){
+								if(clienteMaisLivrosComprados5[i][0] == CMLC5->Elemento.LivroISBN){
+									verificar6 = 1;
+									clienteMaisLivrosComprados5[i][1] = clienteMaisLivrosComprados5[i][1] + CMLC5->Elemento.UnidadesEncomendadas;
+								}
+							}
+							if(verificar6 == 0){
+								for (i = 0; i < 25; i++){
+									if(clienteMaisLivrosComprados5[i][0] == 0){
+										clienteMaisLivrosComprados5[i][0] = CMLC5->Elemento.LivroISBN;
+										clienteMaisLivrosComprados5[i][1] = CMLC5->Elemento.UnidadesEncomendadas;
+										i = 25;
+									}
+								}
+							}
+						}
+					}
+					CMLC5 = CMLC5->Prox;
+				}
+				int aa,bb;
+				for (int x = 0; x < 25; ++x) {
+					for (int y = x + 1; y < 25; ++y) {
+						if (clienteMaisLivrosComprados5[x][1] < clienteMaisLivrosComprados5[y][1]) {
+							aa = clienteMaisLivrosComprados5[x][1];
+							bb = clienteMaisLivrosComprados5[x][0];
+
+							clienteMaisLivrosComprados5[x][1] = clienteMaisLivrosComprados5[y][1];
+							clienteMaisLivrosComprados5[x][0] = clienteMaisLivrosComprados5[y][0];
+
+							clienteMaisLivrosComprados5[y][1] = aa;
+							clienteMaisLivrosComprados5[y][0] = bb;
+						}
+					}
+				}
+				int zz = 0, teste = 0;
+
+				while(teste != 1){
+					ListarISBN(Head,clienteMaisLivrosComprados5[zz][0]);
+					if(zz == (kkk - 1)){
+						teste = 1;
+					}
+					zz++;
+				}
 				break;
 			case 6:
-				//AreaCMaisLivros();
+				printf("\nA Área Científica com mais Livros é: \n");
+				char arrayOfArraysOfChars[25][100] = {}; // array to hold multiple single arrays of characters
+				int acL[25] = {0};
+				PNodo caseSix = Head;
+				int verificar1;
+				while(caseSix != NULL){
+					verificar1 = 0;
+					for (int i = 0; i < 25; i++){
+						if(strcmp(arrayOfArraysOfChars[i],caseSix->Elemento.AreaCientifica) == 0){
+							verificar1 = 1;
+							acL[i] = acL[i]+1;
+						}
+					}
+					if(verificar1 == 0){
+						for (int j = 0; j < 25; j++){
+							if (strlen(arrayOfArraysOfChars[j]) == 0){
+								strcpy(arrayOfArraysOfChars[j],caseSix->Elemento.AreaCientifica);
+								acL[j] = 1;
+								j = 25;
+							}
+							
+						}
+					}
+					caseSix = caseSix->Prox;
+				}
+				int posicao = 0;
+				numAux = 0;
+				num = 0;
+				for (int k = 0; k < 25; k++){
+					numAux = acL[k];
+					if(numAux > num){
+						num = numAux;
+						posicao = k;
+					}
+				}
+				printf("%s\n",arrayOfArraysOfChars[posicao]);
 				break;
 			case 7:
-				printf("\nCliente com Livros mais comprados:\n");
-				//ClienteLivrosMaisVendidos(TCliente);
+				printf("\nCliente com mais Livros comprados: \n");
+				int clienteMaisLivrosComprados[25][2] = {0};
+				PNodoFila CMLC = FEncomendas;
+				int verificar2 = 0;
+				// Percorre a lista das Encomendas e guarda os anos numa matriz auxiliar (anos)
+				while(CMLC != NULL){
+					verificar2 = 0;
+					for (i = 0; i < 25; i++){
+						if(clienteMaisLivrosComprados[i][0] == CMLC->Elemento.ClienteNIF){
+							verificar2 = 1;
+							clienteMaisLivrosComprados[i][1] = clienteMaisLivrosComprados[i][1] + CMLC->Elemento.UnidadesEncomendadas;
+						}
+					}
+					if(verificar2 == 0){
+						for (i = 0; i < 25; i++){
+							if(clienteMaisLivrosComprados[i][0] == 0){
+								clienteMaisLivrosComprados[i][0] = CMLC->Elemento.ClienteNIF;
+								clienteMaisLivrosComprados[i][1] = CMLC->Elemento.UnidadesEncomendadas;
+								i = 25;
+							}
+						}
+					}
+					CMLC = CMLC->Prox;
+				}
+				int nif = 0, nifAux = 0;
+				num = 0;
+				numAux = 0;
+				
+				for (i = 0; i < 25; i++){
+					if(clienteMaisLivrosComprados[i][0] != 0){
+						nifAux = clienteMaisLivrosComprados[i][0];
+						numAux = clienteMaisLivrosComprados[i][1];
+						if(numAux > num){
+							nif = nifAux;
+							num = numAux;
+						}
+					}
+				}
+				CLIENTE C;
+				C.NIF = nif;
+				ListarNIFNOMEMaisLivrosComprados(TCliente,C);
 				break;
 			case 8:
-				//ClientesDecCompras();
+				printf("\nClientes por ordem decrescente do número de compras:\n");
+				int clienteMaisLivrosComprados1[25][2] = {0};
+				PNodoFila CMLC1 = FEncomendas;
+				int verificar4 = 0;
+				// Percorre a lista das Encomendas e guarda os anos numa matriz auxiliar (anos)
+				while(CMLC1 != NULL){
+					verificar4 = 0;
+					for (i = 0; i < 25; i++){
+						if(clienteMaisLivrosComprados1[i][0] == CMLC1->Elemento.ClienteNIF){
+							verificar4 = 1;
+							clienteMaisLivrosComprados1[i][1] = clienteMaisLivrosComprados1[i][1] + CMLC1->Elemento.UnidadesEncomendadas;
+						}
+					}
+					if(verificar4 == 0){
+						for (i = 0; i < 25; i++){
+							if(clienteMaisLivrosComprados1[i][0] == 0){
+								clienteMaisLivrosComprados1[i][0] = CMLC1->Elemento.ClienteNIF;
+								clienteMaisLivrosComprados1[i][1] = CMLC1->Elemento.UnidadesEncomendadas;
+								i = 25;
+							}
+						}
+					}
+					CMLC1 = CMLC1->Prox;
+				}
+				int a,b;
+				for (int x = 0; x < 25; ++x) {
+					for (int y = x + 1; y < 25; ++y) {
+						if (clienteMaisLivrosComprados1[x][1] < clienteMaisLivrosComprados1[y][1]) {
+							a = clienteMaisLivrosComprados1[x][1];
+							b = clienteMaisLivrosComprados1[x][0];
+
+							clienteMaisLivrosComprados1[x][1] = clienteMaisLivrosComprados1[y][1];
+							clienteMaisLivrosComprados1[x][0] = clienteMaisLivrosComprados1[y][0];
+
+							clienteMaisLivrosComprados1[y][1] = a;
+							clienteMaisLivrosComprados1[y][0] = b;
+						}
+					}
+				}
+				CLIENTE C1;
+				for(int cc = 0; cc < 25; cc++){
+					C1.NIF = clienteMaisLivrosComprados1[cc][0];
+					ListarNIFNOMEMaisLivrosComprados(TCliente,C1);
+				}
 				break;
 			case 9:
+				printf("\nO ano com mais publicações é:");
+				int anos5[25][2] = {0};
+				PNodo livr = Head;
+				int verificar = 0;
 				// Percorre a lista dos livros e guarda os anos numa matriz auxiliar (anos)
 				while(livr != NULL){
 					verificar = 0;
 					for (i = 0; i < 25; i++){
-						if(anos[i][0] == livr->Elemento.Ano){
+						if(anos5[i][0] == livr->Elemento.Ano){
 							verificar = 1;
-							anos[i][1] = anos[i][1] + 1;
+							anos5[i][1] = anos5[i][1] + 1;
 						}
 					}
 					if(verificar == 0){
 						for (i = 0; i < 25; i++){
-							if(anos[i][0] == 0){
-								anos[i][0] = livr->Elemento.Ano;
-								anos[i][1] = anos[i][1] + 1;
+							if(anos5[i][0] == 0){
+								anos5[i][0] = livr->Elemento.Ano;
+								anos5[i][1] = 1;
+								i = 25;
 							}
 						}
 					}
 					livr = livr->Prox;
 				}
-				int anoF = 0, anoAux = 0, aux1 = 0, aux = 0;
+				int anoF = 0, anoAux = 0, aux1 = 0;
+				aux = 0;
 				
 				for (i = 0; i < 25; i++){
-					if(anos[i][0] != 0){
-						anoAux = anos[i][0];
-						aux = anos[i][1];
+					if(anos5[i][0] != 0){
+						anoAux = anos5[i][0];
+						aux = anos5[i][1];
 						if(aux > aux1){
 							anoF = anoAux;
 							aux1 = aux;
 						}
 					}
 				}
-
-				printf("\nO ano com mais publicações é: %d", anoF);
-				//AnoMaisPub();
+				printf("\n%d", anoF);
 				break;
 			case 10:
-				//ClienteMaisGastou();
+				printf("\nIntroduza a data inicial do período de dias:\n");
+				printf("Mês: ");
+				int mes11, mes22, ano11, ano22;
+				scanf("%d",&mes11);
+				printf("Ano: ");
+				scanf("%d",&ano11);
+				printf("\n\nIntroduza a data final do período de dias:\n");
+				printf("Mês: ");
+				scanf("%d",&mes22);
+				printf("Ano: ");
+				scanf("%d",&ano22);
+
+				int clienteNIF[25][1] = {0};
+				float clientePreco[25][1] = {0.0};
+				PNodoFila CMLC6 = FEncomendas;
+				int verificar7 = 0;
+				// Percorre a lista das Encomendas e guarda os anos numa matriz auxiliar (anos)
+				int dataMes1, dataAno1;
+				char *in11;
+				char txt1[10];
+				char s1[2] = "-";
+				while(CMLC6 != NULL){
+					verificar7 = 0;
+					//--retirar data: mes e ano das encomendas
+					dataMes1 = 0;
+					dataAno1 = 0;
+					strcpy(txt1,CMLC6->Elemento.DataEncomenda);
+					in11 = strtok(txt1,s1);
+					in11 = strtok(NULL, s1);
+					while(in11 != NULL){
+						if(dataMes1 == 0){
+							dataMes1 = atoi(in11);
+						}
+						else if(dataAno1 == 0){
+							dataAno1 = atoi(in11);
+						}
+						in11 = strtok(NULL, s1);
+					}
+					//--termina o retirar data!
+					// Se as seguintes condições se verificarem:
+					// a encomenda foi feita neste período de dias
+					if(ano11 <= dataAno1 && ano22 >= dataAno1){
+						if(ano11 == dataAno1 && mes11 <= dataMes1 || ano22 == dataAno1 && mes22 >= dataMes1 || ano11 < dataAno1 && ano22 > dataAno1){
+							for (i = 0; i < 25; i++){
+								if(clienteNIF[i][0] == CMLC6->Elemento.ClienteNIF){
+									verificar7 = 1;
+									clientePreco[i][0] = clientePreco[i][0] + CMLC6->Elemento.PrecoTotal;
+								}
+							}
+							if(verificar7 == 0){
+								for (i = 0; i < 25; i++){
+									if(clienteNIF[i][0] == 0){
+										clienteNIF[i][0] = CMLC6->Elemento.ClienteNIF;
+										clientePreco[i][0] = CMLC6->Elemento.PrecoTotal;
+										i = 25;
+									}
+								}
+							}
+						}
+					}
+					CMLC6 = CMLC6->Prox;
+				}
+				float aaa,bbb;
+				for (int x = 0; x < 25; ++x) {
+					for (int y = x + 1; y < 25; ++y) {
+						if (clientePreco[x][0] < clientePreco[y][0]) {
+							aaa = clientePreco[x][0];
+							bbb = clienteNIF[x][0];
+
+							clientePreco[x][0] = clientePreco[y][0];
+							clienteNIF[x][0] = clienteNIF[y][0];
+
+							clientePreco[y][0] = aaa;
+							clienteNIF[y][0] = bbb;
+						}
+					}
+				}
+				int egg = clienteNIF[0][0];
+				CLIENTE Cegg;
+				Cegg.NIF = egg;
+				ListarNIFNOMEMaisLivrosComprados(TCliente, Cegg);
 				break;
 			case 11:
-				//DesperdicioMemoria();
+				printf("\nEm relação ao campo Título dos Livros o desperdício de memória é:\n");
+				PNodo L1 = Head;
+				aux = 0;
+				num = 0;
+				while(L1 != NULL){
+					aux = 50 - strlen(L1->Elemento.Titulo);
+					num = num + aux;
+					L1 = L1->Prox;
+				}
+				printf("%d",num);
+				break;
+			case 12:
+				printf("\nEm relação ao campo Área Científica dos Livros o desperdício de memória é:\n");
+				PNodo L2 = Head;
+				aux = 0;
+				num = 0;
+				while(L2 != NULL){
+					aux = 50 - strlen(L2->Elemento.AreaCientifica);
+					printf("AUX: %d\n", aux);
+					num = num + aux;
+					L2 = L2->Prox;
+				}
+				printf("%d",num);
+				break;
+			case 13:
+				numVendidos = LivrosVendidos(FEncomendas);
+				printf("\nLivros Vendidos: %d\n",numVendidos);
 				break;
 			case 0:
 				break;

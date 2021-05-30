@@ -3,13 +3,13 @@
 
 typedef struct Livro{
 	int ISBN;
-	char Titulo[100];
+	char Titulo[50];
 	char Idioma[100];
 	char PrimeiroAutor[100];
 	char SegundoAutor[100];
 	char Editora[100];
 	int Ano;
-	char AreaCientifica[100];
+	char AreaCientifica[50];
 	float Preco;
 	int Quantidade;
 }LIVRO;
@@ -240,7 +240,10 @@ int CompararElementosPreco (LIVRO X, LIVRO Y){
 		return -1;
 	return 0;
 }
-
+// Lista Preco com:
+// flag = 0  -> Preço igual a
+// flag = -1 -> Preço inferior a
+// flag = 1  -> Preço superior a
 void ListarPreco (PNodo Head, int preco, int flag){
 	PNodo P = Head;
 	LIVRO X;
@@ -408,4 +411,19 @@ void ListarAreaCientifica (PNodo Head, char *tmp){
 		printf("Não existe!");
 	}
 }
+// Consultar por uma Area Cientifica e por um ano especifico
+void ListarACeANO (PNodo Head, char *tmp, int ano){
+	PNodo P = Head;
+	LIVRO X;
+	X.Ano = ano;
+	strcpy(X.AreaCientifica,tmp);
+	while(P != NULL){
+		if(CompararElementosAreaCientifica(P->Elemento, X) == 0 && CompararElementosAno(P->Elemento,X) == 0){
+			ConsultarLivro(P->Elemento);
+			break;
+		}
+		P = P->Prox;
+	}
+}
+
 

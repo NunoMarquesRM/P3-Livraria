@@ -35,12 +35,10 @@ PNodoAB CriarNodoAB(CLIENTE X){
 }
 
 int NumeroNodosAB (PNodoAB T) {
-	int  e, d;
-	if (T == NULL)
+	if (T == NULL){
 		return 0;
-	e = NumeroNodosAB(T->Esquerda);
-	d = NumeroNodosAB(T->Direita);
-	return (e + d + 1);
+	}
+	return (NumeroNodosAB(T->Esquerda) + NumeroNodosAB(T->Direita) + 1);
 }
 
 int CompararElementosNIF (CLIENTE X, CLIENTE Y){
@@ -134,7 +132,9 @@ void MostrarCliente (CLIENTE X){
 	printf("Morada:   %s\n", X.Morada);
 	printf("Telefone: %d\n", X.Telefone);
 	printf("--Lista de Encomendas--\n");
-	MostrarFila(X.ListaCompras);
+	if(X.ListaCompras != NULL){
+		MostrarFila(X.ListaCompras);
+	}
 }
 
 void ListarEmOrdemAB (PNodoAB T) {
@@ -284,15 +284,15 @@ void ListarTelefone(PNodoAB T, CLIENTE C){
 }
 //---Listar NIF e Nome do Cliente---
 void MostrarNIFNOME(CLIENTE X){
-	printf("\nNIF:      %d\n", X.NIF);
-	printf("Nome:     %s\n", X.Nome);
+	printf("\nNIF:   %d\n", X.NIF);
+	printf("Nome:  %s\n", X.Nome);
 }
 //--Listar em Ordem--
-void ListarNIFNOME(PNodoAB T) {
+void ListarAllNIFNOME(PNodoAB T) {
 	if (T != NULL) {
-		ListarEmOrdemAB(T->Esquerda);
+		ListarAllNIFNOME(T->Esquerda);
 		MostrarNIFNOME(T->Elemento);
-		ListarEmOrdemAB(T->Direita);
+		ListarAllNIFNOME(T->Direita);
 	}
 }
 // Operação 3: Listar lista de compras de um dado cliente
@@ -301,11 +301,23 @@ void ListarListaCompras(PNodoAB T, CLIENTE X) {
 		if (CompararElementosNIF(X, T->Elemento) == 0)
 			MostrarFila(T->Elemento.ListaCompras);
 		if (CompararElementosNIF(X, T->Elemento) == -1) // X.NIF < (T->Elemento).NIF)
-			return ListarNIF(T->Esquerda, X);
+			return ListarListaCompras(T->Esquerda, X);
 		else
-			return ListarNIF(T->Direita, X);
+			return ListarListaCompras(T->Direita, X);
 	}
 }
+// Operação 7: Listar CLiente com mais livros comprados
+void ListarNIFNOMEMaisLivrosComprados(PNodoAB T, CLIENTE X) {
+	if (T != NULL) {
+		if (CompararElementosNIF(X, T->Elemento) == 0)
+			MostrarNIFNOME(T->Elemento);
+		if (CompararElementosNIF(X, T->Elemento) == -1) // X.NIF < (T->Elemento).NIF)
+			return ListarNIFNOMEMaisLivrosComprados(T->Esquerda, X);
+		else
+			return ListarNIFNOMEMaisLivrosComprados(T->Direita, X);
+	}
+}
+
 
 // Guardar estrutura no ficheiro
 void SaveFile(PNodoAB T, FILE *fpC) {

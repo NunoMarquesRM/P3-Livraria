@@ -73,14 +73,6 @@ PNodoFila LibertarNodoFila(PNodoFila P){
 	return P;
 }
 
-PNodoFila Remover(PNodoFila Fila){
-	PNodoFila P;
-	P = Fila;
-	Fila = Fila->Prox;
-	P = LibertarNodoFila(P);
-	return Fila;
-}
-
 PNodoFila RemoverEncomenda(PNodoFila Fila, int id){
 	PNodoFila Q = Fila;
 	PNodoFila Aux = NULL;
